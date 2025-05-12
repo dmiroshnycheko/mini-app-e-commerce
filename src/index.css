@@ -1,0 +1,11 @@
+@import "tailwindcss";
+body {
+  color: #1f2937; /* Tailwind gray-800 for default text color */
+  background-color: #f3f4f6; /* Tailwind gray-100 for body background */
+}
+* {
+  color: inherit; /* Ensure all elements inherit the dark text color */
+}
+.text-white {
+  color: #ffffff !important; /* Override for specific white text */
+}

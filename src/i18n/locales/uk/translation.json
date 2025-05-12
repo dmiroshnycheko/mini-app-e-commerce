@@ -1,0 +1,103 @@
+{
+  "common": {
+    "loading": "Завантаження..."
+  },
+  "header": {
+    "home": "Головна",
+    "catalog": "Каталог",
+    "purchases": "Мої покупки",
+    "payments": "Мої платежі",
+    "bonus": "Бонусна програма",
+    "deposit": "Поповнення",
+    "agreement": "Публічна оферта",
+    "privacy": "Політика конфіденційності",
+    "support": "Підтримка"
+  },
+  "home": {
+    "greeting": "Привіт, {{name}}!",
+    "deposit_button": "ПОПОВНИТИ БАЛАНС",
+    "balance": "{{amount}}$",
+    "bonus_balance": "Бонусний баланс: {{amount}}$",
+    "purchases_button": "Мої покупки",
+    "payments_button": "Мої платежі",
+    "bonus_button": "Бонусна програма",
+    "catalog_button": "Каталог товарів",
+    "featured_title": "Акаунти Facebook крепкого ручного фарма на фіз симки",
+    "catalog_link": "КАТАЛОГ",
+    "agreement_link": "ПУБЛІЧНА ОФЕРТА",
+    "privacy_link": "ПОЛІТИКА КОНФІДЕНЦІЙНОСТІ",
+    "channel_link": "НАШ КАНАЛ",
+    "support_link": "ПІДТРИМКА"
+  },
+  "catalog": {
+    "title": "Виберіть категорію",
+    "no_products": "Немає доступних товарів у цій категорії",
+    "products_count": "{{count}} товарів"
+  },
+  "category_products": {
+    "title": "{{categoryName}}",
+    "no_products": "Немає доступних товарів у цій категорії",
+    "price": "${{amount}}",
+    "quantity": "Залишилось: {{quantity}}",
+    "buy_button": "Купити"
+  },
+  "product_purchase": {
+    "title": "Підтвердження покупки",
+    "success_message": "Ви успішно придбали {{productName}} за ${{price}}.",
+    "copy_button": "Копіювати",
+    "download_button": "Скачати файл"
+  },
+  "purchases": {
+    "title": "Мої покупки",
+    "no_purchases": "У вас ще немає покупок",
+    "no_purchases_message": "Перейдіть до каталогу, щоб вибрати товар",
+    "catalog_button": "Перейти до каталогу",
+    "show_data_button": "Показати дані",
+    "copy_button": "Копіювати",
+    "download_button": "Скачати файл"
+  },
+  "payments": {
+    "title": "Мої платежі",
+    "no_transactions": "У вас ще немає транзакцій",
+    "no_transactions_message": "Поповніть баланс або зробіть покупку",
+    "deposit_button": "Поповнити баланс",
+    "type_deposit": "Попoвнення",
+    "type_purchase": "Покупка"
+  },
+  "bonus": {
+    "title": "Бонусна програма",
+    "program_title": "Ваша бонусна програма",
+    "invited_count": "Запрошено користувачів: {{count}}",
+    "bonus_percent": "Відсоток бонусу: {{percent}}%",
+    "bonus_balance": "Бонусний баланс: ${{amount}}",
+    "referral_link_label": "Звичайне посилання",
+    "anonymous_link_label": "Анонімне посилання",
+    "copy_button": "Копіювати",
+    "withdraw_button": "Вивести бонуси"
+  },
+  "deposit": {
+    "title": "Поповнення балансу",
+    "amount_label": "Введіть суму поповнення",
+    "instructions_title": "Інструкція з оплати",
+    "instructions_message": "Будь ласка, перекажіть ${{amount}} на наступну адресу TRC20:",
+    "confirm_button": "Підтвердити оплату"
+  },
+  "agreement": {
+    "title": "Публічна оферта",
+    "agree_button": "Згоден"
+  },
+  "privac": {
+    "title": "Політика конфіденційності"
+  },
+  "support": {
+    "title": "Підтримка",
+    "contact_message": "Якщо у вас виникли питання або проблеми, звертайтеся до нашої служби підтримки:",
+    "telegram_label": "Telegram: ",
+    "working_hours": "Час роботи: 9:00–21:00 (UTC+2)"
+  },
+  "not_found": {
+    "title": "Сторінка не знайдена",
+    "message": "Вибачте, але сторінка, яку ви шукаєте, не існує або була переміщена.",
+    "home_button": "Повернутися на головну"
+  }
+}
