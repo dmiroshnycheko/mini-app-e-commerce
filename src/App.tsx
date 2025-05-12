@@ -82,7 +82,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const { setRole } = useRoleUser();
-  const [,setAuthError] = useState<string | null>(null);
+  const [, setAuthError] = useState<string | null>(null);
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -121,8 +121,7 @@ const App: React.FC = () => {
               firstName: telegramUser.first_name || "Денис",
             };
             const response = await AuthService.login(loginData);
-          setRole(response.role);
-
+            setRole(response.role);
           } catch (error) {
             setAuthError("Failed to authenticate. Please try again.");
           }
@@ -159,9 +158,7 @@ const App: React.FC = () => {
     return (
       <div
         className={`flex items-center justify-center h-screen w-full ${
-          isDarkMode
-            ? "bg-gray-900 text-white"
-            : "bg-gray-100 text-gray-900"
+          isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
         }`}
       >
         <div className="flex flex-col items-center">
@@ -188,12 +185,37 @@ const App: React.FC = () => {
     >
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/admin" element={<Admin />} />
           <Route
+            path="/"
+            element={
+              <HomePage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+          <Route
+            path="/catalog"
+            element={
+              <CatalogPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+          <Route
             path="/catalog/:categoryId"
-            element={<CategoryProductsPage />}
+            element={<CategoryProductsPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />}
+          />
+          <Route
+            path="/bonus"
+            element={
+              <BonusPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+           <Route
+            path="/agreement"
+            element={
+              <AgreementPage
+                toggleTheme={toggleTheme}
+                isDarkMode={isDarkMode}
+              />
+            }
           />
           <Route
             path="/product/:productId/purchase"
@@ -201,15 +223,9 @@ const App: React.FC = () => {
           />
           <Route path="/purchases" element={<PurchasesPage />} />
           <Route path="/payments" element={<PaymentsPage />} />
-          <Route
-            path="/bonus"
-            element={<BonusPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />}
-          />
+          
           <Route path="/deposit" element={<DepositPage />} />
-          <Route
-            path="/agreement"
-            element={<AgreementPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />}
-          />
+         
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/404" element={<NotFoundPage />} />

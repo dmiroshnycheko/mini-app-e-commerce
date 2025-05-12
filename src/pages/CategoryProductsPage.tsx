@@ -1,3 +1,4 @@
+// CategoryProductsPage.tsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -23,10 +24,18 @@ interface Product {
   description: string;
   price: number;
   quantity: number;
-  fileContent: string; // Changed from filePath to match Prisma schema
+  fileContent: string;
 }
 
-const CategoryProductsPage: React.FC = () => {
+interface CategoryProductsPageProps {
+  toggleTheme?: () => void;
+  isDarkMode?: boolean;
+}
+
+const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
+  toggleTheme,
+  isDarkMode,
+}) => {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
@@ -36,7 +45,7 @@ const CategoryProductsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true; // Флаг для предотвращения обновления состояния после размонтирования
+    let isMounted = true;
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -84,25 +93,17 @@ const CategoryProductsPage: React.FC = () => {
     }
 
     return () => {
-      isMounted = false; // Очистка при размонтировании
+      isMounted = false;
     };
   }, [categoryId]);
 
-  // const handlePurchase = (productId: number) => {
-  //   navigate(`/product/${productId}/purchase`);
-  // };
-
   const handleBuy = async (productId: number) => {
     try {
-      const response = await $api.post(`/purchases`, {productId: productId});
-      // Предположим, что API возвращает обновлённый продукт
+      const response = await $api.post(`/purchases`, { productId: productId });
       const updatedProduct: Product = response.data;
-
-      // Обновляем продукт в состоянии
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? updatedProduct : p))
       );
-
       navigate(`/product/${productId}/purchase`);
     } catch (error) {
       console.error("Purchase failed:", error);
@@ -110,43 +111,85 @@ const CategoryProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-900 text-white">
+    <div
+      className={`flex flex-col min-h-screen w-full ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      }`}
+    >
       <Header
         title={t("category_products.title", {
           categoryName: category?.name || "Category",
         })}
         backButton
+        toggleTheme={toggleTheme}
+        isDarkMode={isDarkMode}
       />
       {loading ? (
         <div className="flex flex-col items-center justify-center flex-grow p-4">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div
+            className={`w-12 h-12 border-4 rounded-full animate-spin ${
+              isDarkMode
+                ? "border-blue-500 border-t-transparent"
+                : "border-blue-600 border-t-transparent"
+            }`}
+          ></div>
         </div>
       ) : error ? (
-        <div className="text-center py-10 text-red-400">{error}</div>
+        <div
+          className={`text-center py-10 ${
+            isDarkMode ? "text-red-400" : "text-red-600"
+          }`}
+        >
+          {error}
+        </div>
       ) : (
         <div className="flex flex-col p-4 gap-4 w-full">
           {products.length === 0 ? (
-            <div className="text-center py-10 text-gray-400">
+            <div
+              className={`text-center py-10 ${
+                isDarkMode ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
               {t("category_products.no_products")}
             </div>
           ) : (
             products.map((product) => (
               <div
                 key={product.id}
-                className="bg-gray-800 rounded-lg overflow-hidden"
+                className={`rounded-lg overflow-hidden ${
+                  isDarkMode ? "bg-gray-800" : "bg-white"
+                }`}
               >
                 <div className="p-4">
-                  <h3 className="text-lg font-medium">{product.name}</h3>
-                  <p className="text-gray-400 text-sm mt-1">
+                  <h3
+                    className={`text-lg font-medium ${
+                      isDarkMode ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    {product.name}
+                  </h3>
+                  <p
+                    className={`text-sm mt-1 ${
+                      isDarkMode ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
                     {product.description}
                   </p>
                   <div className="flex justify-between items-center mt-4">
-                    <div className="text-lg font-bold text-green-400">
+                    <div
+                      className={`text-lg font-bold ${
+                        isDarkMode ? "text-green-400" : "text-green-600"
+                      }`}
+                    >
                       {t("category_products.price", {
                         amount: product.price.toFixed(2),
                       })}
                     </div>
-                    <div className="text-sm text-gray-400">
+                    <div
+                      className={`text-sm ${
+                        isDarkMode ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
                       {t("category_products.quantity", {
                         quantity: product.quantity,
                       })}
@@ -154,7 +197,11 @@ const CategoryProductsPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleBuy(product.id)}
-                    className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200"
+                    className={`w-full mt-4 transition-colors duration-200 py-2 px-4 rounded-lg ${
+                      isDarkMode
+                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                        : "bg-blue-500 hover:bg-blue-600 text-white"
+                    }`}
                   >
                     {t("category_products.buy_button")}
                   </button>
