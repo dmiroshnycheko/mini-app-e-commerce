@@ -200,7 +200,12 @@ const App: React.FC = () => {
           />
           <Route
             path="/catalog/:categoryId"
-            element={<CategoryProductsPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />}
+            element={
+              <CategoryProductsPage
+                toggleTheme={toggleTheme}
+                isDarkMode={isDarkMode}
+              />
+            }
           />
           <Route
             path="/bonus"
@@ -208,7 +213,7 @@ const App: React.FC = () => {
               <BonusPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
             }
           />
-           <Route
+          <Route
             path="/agreement"
             element={
               <AgreementPage
@@ -219,16 +224,54 @@ const App: React.FC = () => {
           />
           <Route
             path="/product/:productId/purchase"
-            element={<ProductPurchasePage />}
+            element={
+              <ProductPurchasePage
+                toggleTheme={toggleTheme}
+                isDarkMode={isDarkMode}
+              />
+            }
           />
-          <Route path="/purchases" element={<PurchasesPage />} />
-          <Route path="/payments" element={<PaymentsPage />} />
-          
-          <Route path="/deposit" element={<DepositPage />} />
-         
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/support" element={<SupportPage />} />
-          <Route path="/404" element={<NotFoundPage />} />
+          <Route
+            path="/purchases"
+            element={
+              <PurchasesPage
+                toggleTheme={toggleTheme}
+                isDarkMode={isDarkMode}
+              />
+            }
+          />
+          <Route
+            path="/payments"
+            element={
+              <PaymentsPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+
+          <Route
+            path="/deposit"
+            element={
+              <DepositPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+
+          <Route
+            path="/privacy"
+            element={
+              <PrivacyPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              <SupportPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
+          <Route
+            path="/404"
+            element={
+              <NotFoundPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            }
+          />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
       </Router>

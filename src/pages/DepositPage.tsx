@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Header from '../components/Header';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Header from "../components/Header";
 
-const DepositPage: React.FC = () => {
+interface DepositPageProps {
+  toggleTheme?: () => void;
+  isDarkMode?: boolean;
+}
+
+const DepositPage: React.FC<DepositPageProps> = ({ toggleTheme, isDarkMode }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
 
   const handleDeposit = () => {
@@ -17,53 +22,72 @@ const DepositPage: React.FC = () => {
 
   const handleConfirm = () => {
     console.log(`Deposit of $${amount} confirmed`);
-    navigate('/');
+    navigate("/");
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-900 text-white">
-      <Header title={t('deposit.title')} backButton />
+    <div
+      className={`flex flex-col min-h-screen w-full ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      }`}
+    >
+      <Header
+        title={t("deposit.title")}
+        backButton
+        toggleTheme={toggleTheme}
+        isDarkMode={isDarkMode}
+      />
       <div className="p-4 w-full flex flex-col gap-4">
         {!showInstructions ? (
           <>
-            <div className="bg-gray-800 rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-4">{t('deposit.amount_label')}</h3>
-              <div className="flex items-center bg-gray-700 rounded-lg">
+            <div className={`rounded-lg p-4 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
+              <h3 className="text-lg font-medium mb-4">{t("deposit.amount_label")}</h3>
+              <div className={`flex items-center rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-200"}`}>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="flex-1 bg-transparent text-white px-4 py-3 outline-none"
+                  className={`flex-1 bg-transparent px-4 py-3 outline-none ${
+                    isDarkMode ? "text-white" : "text-gray-900"
+                  }`}
                 />
-                <span className="pr-4 text-gray-400">$</span>
+                <span className={`pr-4 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>$</span>
               </div>
             </div>
             <button
               onClick={handleDeposit}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200"
+              className={`py-3 px-4 rounded-lg transition-colors duration-200 ${
+                isDarkMode
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
+              } ${!amount || parseFloat(amount) <= 0 ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={!amount || parseFloat(amount) <= 0}
             >
-              {t('deposit.deposit_button')}
+              {t("deposit.deposit_button")}
             </button>
           </>
         ) : (
-          <div className="bg-gray-800 rounded-lg p-4">
-            <h3 className="text-lg font-medium mb-4">{t('deposit.instructions_title')}</h3>
-            <p className="text-gray-400 mb-4">
-              {t('deposit.instructions_message', { amount: amount, 1: '<span className="text-white">' })}
+          <div className={`rounded-lg p-4 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
+            <h3 className="text-lg font-medium mb-4">{t("deposit.instructions_title")}</h3>
+            <p className={`mb-4 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+              {t("deposit.instructions_message", { amount })}
             </p>
-            <div className="bg-gray-700 p-3 rounded-lg mb-4">
+            <div className={`p-3 rounded-lg mb-4 ${isDarkMode ? "bg-gray-700" : "bg-gray-200"}`}>
               <code className="text-sm break-all">Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
             </div>
-            <p className="text-gray-400 mb-4">
-              {t('deposit.confirm_message')}
+            <p className={`mb-4 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+              {t("deposit.confirm_message")}
             </p>
             <button
               onClick={handleConfirm}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200"
+              className={`w-full py-3 px-4 rounded-lg transition-colors duration-200 ${
+                isDarkMode
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
+              }`}
             >
-              {t('deposit.confirm_button')}
+              {t("deposit.confirm_button")}
             </button>
           </div>
         )}

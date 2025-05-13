@@ -1,8 +1,13 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import Header from '../components/Header';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import Header from "../components/Header";
 
-const PrivacyPage: React.FC = () => {
+interface PrivacyPageProps {
+  toggleTheme?: () => void;
+  isDarkMode?: boolean;
+}
+
+const PrivacyPage: React.FC<PrivacyPageProps> = ({ toggleTheme, isDarkMode }) => {
   const { t } = useTranslation();
   const privacyText = `
     ПОЛІТИКА КОНФІДЕНЦІЙНОСТІ
@@ -37,11 +42,26 @@ const PrivacyPage: React.FC = () => {
   `;
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-900 text-white">
-      <Header title={t('privacy.title')} backButton />
+    <div
+      className={`flex flex-col min-h-screen w-full ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      }`}
+    >
+      <Header
+        title={t("privacy.title")}
+        backButton
+        toggleTheme={toggleTheme}
+        isDarkMode={isDarkMode}
+      />
       <div className="p-4 w-full">
-        <div className="bg-gray-800 rounded-lg p-4">
-          <pre className="text-sm text-gray-200 whitespace-pre-wrap">{privacyText}</pre>
+        <div className={`rounded-lg p-4 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
+          <pre
+            className={`text-sm whitespace-pre-wrap ${
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            }`}
+          >
+            {privacyText}
+          </pre>
         </div>
       </div>
     </div>
