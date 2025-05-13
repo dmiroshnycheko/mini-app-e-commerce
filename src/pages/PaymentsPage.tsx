@@ -125,7 +125,7 @@ const PaymentsPage: React.FC<PaymentsPageProps> = ({
               className={`rounded-lg p-4 ${
               isDarkMode ? "bg-gray-800" : "bg-white"
               }`}
-              style={{ overflowY: "auto", maxHeight: "400px" }}
+              style={{ overflowY: "auto" }}
             >
               <table className="w-full">
                 <thead>
