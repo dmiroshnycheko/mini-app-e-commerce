@@ -97,7 +97,7 @@ const PaymentsPage: React.FC<PaymentsPageProps> = ({
           ></div>
         </div>
       ) : (
-        <div className="p-4 w-full">
+        <div className="p-4 w-full overflow-y-auto">
           {transactions.length === 0 ? (
             <div className="text-center py-10">
               <div className="text-6xl mb-4">💳</div>
