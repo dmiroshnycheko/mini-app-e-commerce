@@ -22,8 +22,8 @@ import PrivacyPage from "./pages/PrivacyPage";
 import SupportPage from "./pages/SupportPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthService } from "./api/services/AuthService";
-import { useRoleUser } from "./contexts/RoleUserContext";
 import Admin from "./pages/Admin";
+import { useRoleUser } from "./contexts/RoleUserContext";
 
 // Telegram WebApp interface (unchanged)
 declare global {
@@ -32,6 +32,10 @@ declare global {
       WebApp: {
         ready: () => void;
         expand: () => void;
+        requestFullscreen: () => void;
+        setHeaderColor: (color: string) => void;
+        isVersionAtLeast: (version: string) => boolean;
+        version: string;
         MainButton: {
           text: string;
           color: string;
@@ -59,6 +63,7 @@ declare global {
             last_name?: string;
             username?: string;
             language_code?: string;
+            photo_url?: string;
           };
           start_param?: string;
           auth_date: number;
@@ -87,21 +92,32 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const initializeApp = async () => {
-      const webApp = window.Telegram?.WebApp;
-      console.log(webApp + " webApp");
+      const tg = window.Telegram?.WebApp;
 
-      if (webApp) {
-        webApp.ready();
-        webApp.expand();
-        if (webApp.colorScheme === "light") {
+      if (tg) {
+        tg.ready();
+        if (tg.isVersionAtLeast("8.0")) {
+          tg.requestFullscreen();
+          tg.setHeaderColor("#000000");
+        } else {
+          tg.expand();
+          console.log(
+            "Bot API below 8.0, using expand(). Current Telegram version:",
+            tg.version
+          );
+        }
+
+        // Set theme based on Telegram color scheme
+        if (tg.colorScheme === "light") {
           setIsDarkMode(false);
           document.documentElement.classList.remove("dark");
         } else {
           setIsDarkMode(true);
           document.documentElement.classList.add("dark");
         }
+
         // Set language based on Telegram user language
-        const userLang = webApp.initDataUnsafe.user?.language_code || "uk";
+        const userLang = tg.initDataUnsafe.user?.language_code || "uk";
         const lang = userLang.startsWith("ru")
           ? "ru"
           : userLang.startsWith("en")
@@ -109,46 +125,84 @@ const App: React.FC = () => {
           : "uk";
         i18n.changeLanguage(lang);
 
-        // Attempt to log in with Telegram user data
-        const telegramUser = webApp.initDataUnsafe.user;
-        console.log("telegramUser" + telegramUser);
+        const initData = tg.initDataUnsafe;
+        console.log("Telegram initData:", JSON.stringify(initData, null, 2));
 
-        if (telegramUser) {
+        if (initData?.user) {
+          console.log("User data extracted:", initData.user);
           try {
             const loginData = {
-              tgId: telegramUser.id.toString() || "5969166369",
-              username: telegramUser.username || "//",
-              firstName: telegramUser.first_name || "Денис",
+              tgId: initData.user.id.toString(),
+              username: initData.user.username || "//",
+              firstName: initData.user.first_name || "Денис",
             };
             const response = await AuthService.login(loginData);
             setRole(response.role);
           } catch (error) {
+            console.error("Login error:", error);
             setAuthError("Failed to authenticate. Please try again.");
           }
         } else {
-          setAuthError("Telegram user data not available.");
+          console.warn("User data not available in initData");
         }
       } else {
-        try {
-          const loginData = {
-            tgId: "5969166369",
-            username: "//",
-            firstName: "Денис",
-          };
-          const response = await AuthService.login(loginData);
-          setRole(response.role);
-        } catch (error) {
-          setAuthError("Failed to authenticate. Please try again.");
+        console.warn("Telegram.WebApp is not available. Environment:", {
+          windowLocation: window.location.href,
+          userAgent: navigator.userAgent,
+        });
+
+        const hash = window.location.hash;
+        const params = new URLSearchParams(hash.replace("#", ""));
+        const tgWebAppData = params.get("tgWebAppData");
+
+        if (tgWebAppData) {
+          const decodedData = decodeURIComponent(tgWebAppData);
+          const dataParams = new URLSearchParams(decodedData);
+          const userParam = dataParams.get("user");
+          const user = userParam
+            ? JSON.parse(decodeURIComponent(userParam))
+            : null;
+
+          if (user) {
+            console.log("Extracted user data from tgWebAppData:", user);
+            try {
+              const loginData = {
+                tgId: user.id.toString(),
+                username: user.username || "//",
+                firstName: user.first_name || "Денис",
+              };
+              const response = await AuthService.login(loginData);
+              setRole(response.role);
+            } catch (error) {
+              console.error("Login error:", error);
+              setAuthError("Failed to authenticate. Please try again.");
+            }
+          } else {
+            console.warn("No user data in tgWebAppData");
+          }
+        } else {
+          console.log("tgWebAppData not found in URL, using hardcoded data");
+          try {
+            const loginData = {
+              tgId: "5969166369",
+              username: "//",
+              firstName: "Денис",
+            };
+            const response = await AuthService.login(loginData);
+            setRole(response.role);
+          } catch (error) {
+            console.error("Login error with hardcoded data:", error);
+            setAuthError("Failed to authenticate. Please try again.");
+          }
         }
-        setAuthError("Telegram WebApp is not available.");
       }
       setIsLoading(false);
     };
 
     initializeApp();
-  }, [i18n]);
+  }, [i18n, setRole]);
 
-  // Функция для переключения темы
+  // Function to toggle theme
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle("dark");
@@ -246,14 +300,12 @@ const App: React.FC = () => {
               <PaymentsPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
             }
           />
-
           <Route
             path="/deposit"
             element={
               <DepositPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
             }
           />
-
           <Route
             path="/privacy"
             element={
