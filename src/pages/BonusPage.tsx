@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
 import { UserService } from "../api/services/UserService";
+import $api from "../api/http";
 
 // Define the BonusData interface based on available data
 interface BonusData {
@@ -21,6 +22,10 @@ const BonusPage: React.FC<BonusPageProps> = ({ toggleTheme, isDarkMode }) => {
   const { t } = useTranslation();
   const [bonusData, setBonusData] = useState<BonusData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [notification, setNotification] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,11 +58,36 @@ const BonusPage: React.FC<BonusPageProps> = ({ toggleTheme, isDarkMode }) => {
   const handleCopyLink = (link: string) => {
     navigator.clipboard.writeText(link).then(() => {
       console.log("Link copied to clipboard");
+      setNotification({
+        type: "success",
+        message: t("bonus.copy_success"),
+      });
+      setTimeout(() => setNotification(null), 3000);
     });
   };
 
-  const handleWithdraw = () => {
-    console.log("Withdrawal requested");
+  const handleWithdraw = async () => {
+    if (!bonusData || bonusData.bonusBalance <= 0) return;
+
+    try {
+      const response = await $api.post("/bonus/withdraw");
+      setBonusData({
+        ...bonusData,
+        bonusBalance: response.data.newBonusBalance,
+      });
+      setNotification({
+        type: "success",
+        message: t("bonus.withdraw_success"),
+      });
+      setTimeout(() => setNotification(null), 3000);
+    } catch (error) {
+      console.error("Error processing withdrawal:", error);
+      setNotification({
+        type: "error",
+        message: t("bonus.withdraw_error"),
+      });
+      setTimeout(() => setNotification(null), 5000);
+    }
   };
 
   return (
@@ -92,6 +122,21 @@ const BonusPage: React.FC<BonusPageProps> = ({ toggleTheme, isDarkMode }) => {
         </div>
       ) : (
         <div className="p-4 w-full flex flex-col gap-4">
+          {notification && (
+            <div
+              className={`rounded-lg p-3 text-center ${
+                notification.type === "success"
+                  ? isDarkMode
+                    ? "bg-green-600 text-white"
+                    : "bg-green-500 text-white"
+                  : isDarkMode
+                  ? "bg-red-600 text-white"
+                  : "bg-red-500 text-white"
+              }`}
+            >
+              {notification.message}
+            </div>
+          )}
           <div
             className={`rounded-lg p-4 ${
               isDarkMode ? "bg-gray-800" : "bg-white"
@@ -193,7 +238,11 @@ const BonusPage: React.FC<BonusPageProps> = ({ toggleTheme, isDarkMode }) => {
               isDarkMode
                 ? "bg-green-600 hover:bg-green-700 text-white"
                 : "bg-green-500 hover:bg-green-600 text-white"
-            } ${bonusData.bonusBalance === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+            } ${
+              bonusData.bonusBalance === 0
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
             disabled={bonusData.bonusBalance === 0}
           >
             {t("bonus.withdraw_button")}
