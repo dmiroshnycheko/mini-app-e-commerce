@@ -34,7 +34,7 @@ const BonusPage: React.FC<BonusPageProps> = ({ toggleTheme, isDarkMode }) => {
         const user = await UserService.getCurrentUser();
 
         // Construct referral and anonymous links using referralCode
-        const botUrl = "https://t.me/white_paywqwq_bot"; // Replace with your actual bot URL
+        const botUrl = "https://t.me/IOS_GP_Accountts_bot"; // Replace with your actual bot URL
         const referralLink = `${botUrl}?start=ref_${user.referralCode}`;
         const anonymousLink = `${botUrl}?start=anon_${user.referralCode}`;
 
