@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
 import $api from "../api/http";
-import { AnimatePresence, motion } from "framer-motion";
+import {  motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -34,14 +34,6 @@ interface Product {
   fileContent: string;
 }
 
-interface ApiError {
-  response?: {
-    data?: {
-      error?: string;
-    };
-  };
-  message?: string;
-}
 
 interface CategoryProductsPageProps {
   toggleTheme?: () => void;

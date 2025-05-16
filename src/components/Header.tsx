@@ -296,7 +296,33 @@ const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <div className="py-2 w-max">
-                <Link
+              {role === "admin" && (
+                  <Link
+                  to="/admin"
+                  className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
+                    isDarkMode ? "text-white" : "text-gray-800"
+                  }`}
+                  onClick={() => setIsProfileOpen(false)}
+                  >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2 text-red-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M3 6h18M3 14h18M3 18h18M3 6h18v12H3z"
+                    />
+                  </svg>
+                  <div>
+                    <p>Adminka</p>
+                  </div>
+                  </Link>
+                )}                <Link
                   to="/deposit"
                   className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
                     isDarkMode ? "text-white" : "text-gray-800"
