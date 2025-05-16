@@ -1,103 +1,108 @@
 {
-  "common": {
-    "loading": "Loading..."
-  },
-  "header": {
-    "home": "Home",
-    "catalog": "Catalog",
-    "purchases": "My Purchases",
-    "payments": "My Payments",
-    "bonus": "Bonus Program",
-    "deposit": "Deposit",
-    "agreement": "Public Offer",
-    "privacy": "Privacy Policy",
-    "support": "Support"
-  },
-  "home": {
-    "greeting": "Hello, {{name}}!",
-    "deposit_button": "DEPOSIT BALANCE",
-    "balance": "{{amount}}$",
-    "bonus_balance": "Bonus Balance: {{amount}}$",
-    "purchases_button": "My Purchases",
-    "payments_button": "My Payments",
-    "bonus_button": "Bonus Program",
-    "catalog_button": "Catalog",
-    "featured_title": "Strong manually farmed Facebook accounts on physical SIMs",
-    "catalog_link": "CATALOG",
-    "agreement_link": "PUBLIC OFFER",
-    "privacy_link": "PRIVACY POLICY",
-    "channel_link": "OUR CHANNEL",
-    "support_link": "SUPPORT"
-  },
-  "catalog": {
-    "title": "Select Category",
-    "no_products": "No products available in this category",
-    "products_count": "{{count}} products"
-  },
-  "category_products": {
-    "title": "{{categoryName}}",
-    "no_products": "No products available in this category",
-    "price": "${{amount}}",
-    "quantity": "Available: {{quantity}}",
-    "buy_button": "Buy"
-  },
-  "product_purchase": {
-    "title": "Purchase Confirmation",
-    "success_message": "You have successfully purchased {{productName}} for ${{price}}.",
-    "copy_button": "Copy",
-    "download_button": "Download File"
-  },
-  "purchases": {
-    "title": "My Purchases",
-    "no_purchases": "You have no purchases yet",
-    "no_purchases_message": "Go to the catalog to select a product",
-    "catalog_button": "Go to Catalog",
-    "show_data_button": "Show Data",
-    "copy_button": "Copy",
-    "download_button": "Download File"
-  },
-  "payments": {
-    "title": "My Payments",
-    "no_transactions": "You have no transactions yet",
-    "no_transactions_message": "Deposit funds or make a purchase",
-    "deposit_button": "Deposit Balance",
+	"common": {
+		"loading": "Loading..."
+	},
+	"header": {
+		"home": "Home",
+		"catalog": "Catalog",
+		"purchases": "My Purchases",
+		"payments": "My Payments",
+		"bonus": "Bonus Program",
+		"deposit": "Deposit",
+		"agreement": "Public Offer",
+		"privacy": "Privacy Policy",
+		"support": "Support"
+	},
+	"home": {
+		"greeting": "Hello, {{name}}!",
+		"deposit_button": "DEPOSIT BALANCE",
+		"balance": "{{amount}}$",
+		"bonus_balance": "Bonus Balance: {{amount}}$",
+		"purchases_button": "My Purchases",
+		"payments_button": "My Payments",
+		"bonus_button": "Bonus Program",
+		"catalog_button": "Catalog",
+		"featured_title": "Strong manually farmed Facebook accounts on physical SIMs",
+		"catalog_link": "CATALOG",
+		"agreement_link": "PUBLIC OFFER",
+		"privacy_link": "PRIVACY POLICY",
+		"channel_link": "OUR CHANNEL",
+		"support_link": "SUPPORT"
+	},
+	"catalog": {
+		"title": "Select Category",
+		"no_products": "No products available in this category",
+		"products_count": "{{count}} products"
+	},
+	"category_products": {
+    "details_button": "Details",
+		"title": "{{categoryName}}",
+		"no_products": "No products available in this category",
+		"price": "${{amount}}",
+		"quantity": "Available: {{quantity}}",
+		"buy_button": "Buy",
+		"confirm_button": "Confirm",
+		"cancel_button": "Cancel"
+	},
+	"product_purchase": {
+		"title": "Purchase Confirmation",
+		"success_message": "You have successfully purchased {{productName}} for ${{price}}.",
+		"copy_button": "Copy",
+		"download_button": "Download File"
+	},
+	"purchases": {
+		"title": "My Purchases",
+		"no_purchases": "You have no purchases yet",
+		"no_purchases_message": "Go to the catalog to select a product",
+		"catalog_button": "Go to Catalog",
+		"show_data_button": "Show Data",
+		"copy_button": "Copy",
+		"download_button": "Download File"
+	},
+	"payments": {
+		"title": "My Payments",
+		"no_transactions": "You have no transactions yet",
+		"no_transactions_message": "Deposit funds or make a purchase",
+		"deposit_button": "Deposit Balance",
     "type_deposit": "Deposit",
-    "type_purchase": "Purchase"
-  },
-  "bonus": {
-    "title": "Bonus Program",
-    "program_title": "Your Bonus Program",
-    "invited_count": "Invited Users: {{count}}",
-    "bonus_percent": "Bonus Percentage: {{percent}}%",
-    "bonus_balance": "Bonus Balance: ${{amount}}",
-    "referral_link_label": "Referral Link",
-    "anonymous_link_label": "Anonymous Link",
-    "copy_button": "Copy",
-    "withdraw_button": "Withdraw Bonuses"
-  },
-  "deposit": {
-    "title": "Deposit Balance",
-    "amount_label": "Enter Deposit Amount",
-    "instructions_title": "Payment Instructions",
-    "instructions_message": "Please transfer ${{amount}} to the following TRC20 address:",
-    "confirm_button": "Confirm Payment"
-  },
-  "agreement": {
-    "title": "Public Offer",
-    "agree_button": "Agree"
-  },
-  "privacy": {
-    "title": "Privacy Policy"
-  },
-  "support": {
-    "title": "Support",
-    "contact_message": "If you have any questions or issues, contact our support team:",
-    "telegram_label": "Telegram: ",
-    "working_hours": "Working Hours: 9:00–21:00 (UTC+2)"
-  },
-  "not_found": {
-    "title": "Page Not Found",
-    "message": "Sorry, the page you are looking for does not exist or has been moved.",
-    "home_button": "Back to Home"
-  }
+    "amount": "Amount",
+    "date": "Date",
+		"type_purchase": "Purchase"
+	},
+	"bonus": {
+		"title": "Bonus Program",
+		"program_title": "Your Bonus Program",
+		"invited_count": "Invited Users: {{count}}",
+		"bonus_percent": "Bonus Percentage: {{percent}}%",
+		"bonus_balance": "Bonus Balance: ${{amount}}",
+		"referral_link_label": "Referral Link",
+		"anonymous_link_label": "Anonymous Link",
+		"copy_button": "Copy",
+		"withdraw_button": "Withdraw Bonuses"
+	},
+	"deposit": {
+		"title": "Deposit Balance",
+		"amount_label": "Enter Deposit Amount",
+		"instructions_title": "Payment Instructions",
+		"instructions_message": "Please transfer ${{amount}} to the following TRC20 address:",
+		"confirm_button": "Confirm Payment"
+	},
+	"agreement": {
+		"title": "Public Offer",
+		"agree_button": "Agree"
+	},
+	"privacy": {
+		"title": "Privacy Policy"
+	},
+	"support": {
+		"title": "Support",
+		"contact_message": "If you have any questions or issues, contact our support team:",
+		"telegram_label": "Telegram: ",
+		"working_hours": "Working Hours: 9:00–21:00 (UTC+2)"
+	},
+	"not_found": {
+		"title": "Page Not Found",
+		"message": "Sorry, the page you are looking for does not exist or has been moved.",
+		"home_button": "Back to Home"
+	}
 }

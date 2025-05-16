@@ -1,103 +1,110 @@
 {
-  "common": {
-    "loading": "Загрузка..."
-  },
-  "header": {
-    "home": "Главная",
-    "catalog": "Каталог",
-    "purchases": "Мои покупки",
-    "payments": "Мои платежи",
-    "bonus": "Бонусная программа",
-    "deposit": "Пополнение",
-    "agreement": "Публичная оферта",
-    "privacy": "Политика конфиденциальности",
-    "support": "Поддержка"
-  },
-  "home": {
-    "greeting": "Привет, {{name}}!",
-    "deposit_button": "ПОПОЛНИТЬ БАЛАНС",
-    "balance": "{{amount}}$",
-    "bonus_balance": "Бонусный баланс: {{amount}}$",
-    "purchases_button": "Мои покупки",
-    "payments_button": "Мои платежи",
-    "bonus_button": "Бонусная программа",
-    "catalog_button": "Каталог",
-    "featured_title": "Крепкие аккаунты Facebook ручного фарма на физические SIM-карты",
-    "catalog_link": "КАТАЛОГ",
-    "agreement_link": "ПУБЛИЧНАЯ ОФЕРТА",
-    "privacy_link": "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ",
-    "channel_link": "НАШ КАНАЛ",
-    "support_link": "ПОДДЕРЖКА"
-  },
-  "catalog": {
-    "title": "Выберите категорию",
-    "no_products": "В этой категории нет товаров",
-    "products_count": "{{count}} товаров"
-  },
-  "category_products": {
-    "title": "{{categoryName}}",
-    "no_products": "В этой категории нет товаров",
-    "price": "${{amount}}",
-    "quantity": "Осталось: {{quantity}}",
-    "buy_button": "Купить"
-  },
-  "product_purchase": {
-    "title": "Подтверждение покупки",
-    "success_message": "Вы успешно приобрели {{productName}} за ${{price}}.",
-    "copy_button": "Копировать",
-    "download_button": "Скачать файл"
-  },
-  "purchases": {
-    "title": "Мои покупки",
-    "no_purchases": "У вас еще нет покупок",
-    "no_purchases_message": "Перейдите в каталог, чтобы выбрать товар",
-    "catalog_button": "Перейти в каталог",
-    "show_data_button": "Показать данные",
-    "copy_button": "Копировать",
-    "download_button": "Скачать файл"
-  },
-  "payments": {
-    "title": "Мои платежи",
-    "no_transactions": "У вас еще нет транзакций",
-    "no_transactions_message": "Пополните баланс или совершите покупку",
-    "deposit_button": "Пополнить баланс",
-    "type_deposit": "Пополнение",
-    "type_purchase": "Покупка"
-  },
-  "bonus": {
-    "title": "Бонусная программа",
-    "program_title": "Ваша бонусная программа",
-    "invited_count": "Приглашено пользователей: {{count}}",
-    "bonus_percent": "Процент бонуса: {{percent}}%",
-    "bonus_balance": "Бонусный баланс: ${{amount}}",
-    "referral_link_label": "Реферальная ссылка",
-    "anonymous_link_label": "Анонимная ссылка",
-    "copy_button": "Копировать",
-    "withdraw_button": "Вывести бонусы"
-  },
-  "deposit": {
-    "title": "Пополнение баланса",
-    "amount_label": "Введите сумму пополнения",
-    "instructions_title": "Инструкция по оплате",
-    "instructions_message": "Пожалуйста, переведите ${{amount}} на следующий адрес TRC20:",
-    "confirm_button": "Подтвердить оплату"
-  },
-  "agreement": {
-    "title": "Публичная оферта",
-    "agree_button": "Согласен"
-  },
-  "privacy": {
-    "title": "Политика конфиденциальности"
-  },
-  "support": {
-    "title": "Поддержка",
-    "contact_message": "Если у вас есть вопросы или проблемы, обратитесь в нашу службу поддержки:",
-    "telegram_label": "Telegram: ",
-    "working_hours": "Часы работы: 9:00–21:00 (UTC+2)"
-  },
-  "not_found": {
-    "title": "Страница не найдена",
-    "message": "Извините, страница, которую вы ищете, не существует или была перемещена.",
-    "home_button": "Вернуться на главную"
-  }
+	"common": {
+		"loading": "Загрузка..."
+	},
+	"header": {
+		"home": "Главная",
+		"catalog": "Каталог",
+		"purchases": "Мои покупки",
+		"payments": "Мои платежи",
+		"bonus": "Бонусная программа",
+		"deposit": "Пополнение",
+		"agreement": "Публичная оферта",
+		"privacy": "Политика конфиденциальности",
+		"support": "Поддержка"
+	},
+	"home": {
+		"greeting": "Привет, {{name}}!",
+		"deposit_button": "ПОПОЛНИТЬ БАЛАНС",
+		"balance": "{{amount}}$",
+		"bonus_balance": "Бонусный баланс: {{amount}}$",
+		"purchases_button": "Мои покупки",
+		"payments_button": "Мои платежи",
+		"bonus_button": "Бонусная программа",
+		"catalog_button": "Каталог",
+		"featured_title": "Крепкие аккаунты Facebook ручного фарма на физические SIM-карты",
+		"catalog_link": "КАТАЛОГ",
+		"agreement_link": "ПУБЛИЧНАЯ ОФЕРТА",
+		"privacy_link": "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ",
+		"channel_link": "НАШ КАНАЛ",
+		"support_link": "ПОДДЕРЖКА"
+	},
+	"catalog": {
+		"title": "Выберите категорию",
+		"no_products": "В этой категории нет товаров",
+		"products_count": "{{count}} товаров"
+	},
+	"category_products": {
+    "details_button": "Подробнее",
+
+		"title": "{{categoryName}}",
+		"no_products": "В этой категории нет товаров",
+		"price": "${{amount}}",
+		"quantity": "Осталось: {{quantity}}",
+		"buy_button": "Купить",
+		"confirm_button": "Подтвердить",
+		"cancel_button": "Отмена"
+	},
+	"product_purchase": {
+		"title": "Подтверждение покупки",
+		"success_message": "Вы успешно приобрели {{productName}} за ${{price}}.",
+		"copy_button": "Копировать",
+		"download_button": "Скачать файл"
+	},
+	"purchases": {
+		"title": "Мои покупки",
+		"no_purchases": "У вас еще нет покупок",
+		"no_purchases_message": "Перейдите в каталог, чтобы выбрать товар",
+		"catalog_button": "Перейти в каталог",
+		"show_data_button": "Показать данные",
+		"copy_button": "Копировать",
+		"download_button": "Скачать файл"
+	},
+	"payments": {
+		"title": "Мои платежи",
+		"no_transactions": "У вас еще нет транзакций",
+		"no_transactions_message": "Пополните баланс или совершите покупку",
+		"deposit_button": "Пополнить баланс",
+		"type_deposit": "Пополнение",
+		"amount": "Пополнение",
+    "date": "Дата",
+    
+		"type_purchase": "Покупка"
+	},
+	"bonus": {
+		"title": "Бонусная программа",
+		"program_title": "Ваша бонусная программа",
+		"invited_count": "Приглашено пользователей: {{count}}",
+		"bonus_percent": "Процент бонуса: {{percent}}%",
+		"bonus_balance": "Бонусный баланс: ${{amount}}",
+		"referral_link_label": "Реферальная ссылка",
+		"anonymous_link_label": "Анонимная ссылка",
+		"copy_button": "Копировать",
+		"withdraw_button": "Вывести бонусы"
+	},
+	"deposit": {
+		"title": "Пополнение баланса",
+		"amount_label": "Введите сумму пополнения",
+		"instructions_title": "Инструкция по оплате",
+		"instructions_message": "Пожалуйста, переведите ${{amount}} на следующий адрес TRC20:",
+		"confirm_button": "Подтвердить оплату"
+	},
+	"agreement": {
+		"title": "Публичная оферта",
+		"agree_button": "Согласен"
+	},
+	"privacy": {
+		"title": "Политика конфиденциальности"
+	},
+	"support": {
+		"title": "Поддержка",
+		"contact_message": "Если у вас есть вопросы или проблемы, обратитесь в нашу службу поддержки:",
+		"telegram_label": "Telegram: ",
+		"working_hours": "Часы работы: 9:00–21:00 (UTC+2)"
+	},
+	"not_found": {
+		"title": "Страница не найдена",
+		"message": "Извините, страница, которую вы ищете, не существует или была перемещена.",
+		"home_button": "Вернуться на главную"
+	}
 }

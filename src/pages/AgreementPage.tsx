@@ -1,22 +1,27 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import Header from "../components/Header";
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { AnimatePresence, motion } from 'framer-motion'
+import Header from '../components/Header'
+import { buttonVariants, cardVariants } from '../utils/animations'
 
 interface AgreementPageProps {
-  toggleTheme?: () => void;
-  isDarkMode?: boolean;
+	toggleTheme?: () => void
+	isDarkMode?: boolean
 }
 
-const AgreementPage: React.FC<AgreementPageProps> = ({ toggleTheme, isDarkMode }) => {
-  const { t } = useTranslation();
-  const [isAgreed, setIsAgreed] = useState(false);
+const AgreementPage: React.FC<AgreementPageProps> = ({
+	toggleTheme,
+	isDarkMode,
+}) => {
+	const { t } = useTranslation()
+	const [isAgreed, setIsAgreed] = useState(false)
 
-  const handleAgree = () => {
-    setIsAgreed(true);
-    console.log("User agreed to terms");
-  };
+	const handleAgree = () => {
+		setIsAgreed(true)
+		console.log('User agreed to terms')
+	}
 
-  const agreementText = `
+	const agreementText = `
 ПУБЛІЧНА ОФЕРТА
 
 Ця Публічна оферта (далі – Оферта) є пропозицією укласти договір на зазначених нижче умовах між фізичною особою (далі – Користувач) та адміністрацією Telegram-бота (далі – Адміністрація).
@@ -49,49 +54,60 @@ const AgreementPage: React.FC<AgreementPageProps> = ({ toggleTheme, isDarkMode }
 6.2. У разі виникнення питань Користувач може звернутися до служби підтримки через Telegram-бот.
 
 Ця Оферта складена українською мовою та є офіційним документом.
-`;
+`
 
-  return (
-    <div
-      className={`flex flex-col min-h-screen w-full ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
-      }`}
-    >
-      <Header
-        title={t("agreement.title")}
-        backButton
-        toggleTheme={toggleTheme}
-        isDarkMode={isDarkMode}
-      />
-      <div className="p-4 w-full">
-        <div
-          className={`rounded-lg p-4 ${
-            isDarkMode ? "bg-gray-800" : "bg-white"
-          }`}
-        >
-          <pre
-            className={`text-sm whitespace-pre-wrap ${
-              isDarkMode ? "text-gray-200" : "text-gray-700"
-            }`}
-          >
-            {agreementText}
-          </pre>
-          {!isAgreed && (
-            <button
-              onClick={handleAgree}
-              className={`w-full mt-4 py-3 px-4 rounded-lg transition-colors duration-200 ${
-                isDarkMode
-                  ? "bg-blue-600 hover:bg-blue-700 text-white"
-                  : "bg-blue-500 hover:bg-blue-600 text-white"
-              }`}
-            >
-              {t("agreement.agree_button")}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+	return (
+		<div
+			className={`flex flex-col min-h-screen w-full ${
+				isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
+			}`}
+		>
+			<Header
+				title={t('agreement.title')}
+				backButton
+				toggleTheme={toggleTheme}
+				isDarkMode={isDarkMode}
+			/>
+			<div className='p-4 sm:p-6 lg:p-8 w-full max-w-3xl mx-auto'>
+				<motion.div
+					variants={cardVariants}
+					initial='hidden'
+					animate='visible'
+					className={`rounded-lg p-4 sm:p-6 lg:p-8 ${
+						isDarkMode ? 'bg-gray-800' : 'bg-white'
+					}`}
+				>
+					<pre
+						className={`text-sm sm:text-base whitespace-pre-wrap ${
+							isDarkMode ? 'text-gray-200' : 'text-gray-700'
+						}`}
+					>
+						{agreementText}
+					</pre>
+					<AnimatePresence>
+						{!isAgreed && (
+							<motion.button
+								variants={buttonVariants}
+								initial='hidden'
+								animate='visible'
+								exit='exit'
+								whileHover={{ scale: 1.05 }}
+								transition={{ duration: 0.2, ease: 'easeOut' }}
+								onClick={handleAgree}
+								className={`w-full sm:w-fit sm:min-w-[160px] mt-4 sm:mt-6 py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 cursor-pointer ${
+									isDarkMode
+										? 'bg-blue-600 hover:bg-blue-700 text-white'
+										: 'bg-blue-500 hover:bg-blue-600 text-white'
+								}`}
+							>
+								{t('agreement.agree_button')}
+							</motion.button>
+						)}
+					</AnimatePresence>
+				</motion.div>
+			</div>
+		</div>
+	)
+}
 
-export default AgreementPage;
+export default AgreementPage

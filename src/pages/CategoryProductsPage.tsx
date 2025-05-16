@@ -1,9 +1,16 @@
-// CategoryProductsPage.tsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
 import $api from "../api/http";
+import { AnimatePresence, motion } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  buttonVariants,
+  cardVariants,
+  containerVariants,
+} from "../utils/animations";
 
 interface Category {
   id: number;
@@ -25,6 +32,15 @@ interface Product {
   price: number;
   quantity: number;
   fileContent: string;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+  message?: string;
 }
 
 interface CategoryProductsPageProps {
@@ -76,9 +92,10 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
           setProducts(filteredProducts);
           setLoading(false);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error fetching data:", error);
-        if (isMounted) {
+        if (isMounted && error instanceof Error) {
+          toast.error(error.message || "Failed to load data");
           setError(error.message || "Failed to load data");
           setLoading(false);
         }
@@ -89,6 +106,7 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
       fetchData();
     } else {
       setError("Invalid category ID");
+      toast.error("Invalid category ID");
       setLoading(false);
     }
 
@@ -97,17 +115,8 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
     };
   }, [categoryId]);
 
-  const handleBuy = async (productId: number) => {
-    try {
-      const response = await $api.post(`/purchases`, { productId: productId });
-      const updatedProduct: Product = response.data;
-      setProducts((prev) =>
-        prev.map((p) => (p.id === productId ? updatedProduct : p))
-      );
-      navigate(`/product/${productId}/purchase`);
-    } catch (error) {
-      console.error("Purchase failed:", error);
-    }
+  const handleDetails = (productId: number) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
@@ -124,60 +133,83 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
         toggleTheme={toggleTheme}
         isDarkMode={isDarkMode}
       />
+      <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4">
+          {t("category_products.title", {
+            categoryName: category?.name || "Category",
+          })}
+        </h1>
+      </div>
+      <ToastContainer />
       {loading ? (
         <div className="flex flex-col items-center justify-center flex-grow p-4">
-          <div
+          <motion.div
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1 }}
             className={`w-12 h-12 border-4 rounded-full animate-spin ${
               isDarkMode
                 ? "border-blue-500 border-t-transparent"
                 : "border-blue-600 border-t-transparent"
             }`}
-          ></div>
+          ></motion.div>
         </div>
       ) : error ? (
-        <div
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
           className={`text-center py-10 ${
             isDarkMode ? "text-red-400" : "text-red-600"
           }`}
         >
           {error}
-        </div>
+        </motion.div>
       ) : (
-        <div className="flex flex-col p-4 gap-4 w-full">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col p-4 sm:p-6 lg:p-8 gap-4 sm:gap-6 w-full max-w-7xl mx-auto"
+        >
           {products.length === 0 ? (
-            <div
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
               className={`text-center py-10 ${
                 isDarkMode ? "text-gray-400" : "text-gray-600"
               }`}
             >
               {t("category_products.no_products")}
-            </div>
+            </motion.div>
           ) : (
             products.map((product) => (
-              <div
+              <motion.div
+                variants={cardVariants}
                 key={product.id}
                 className={`rounded-lg overflow-hidden ${
                   isDarkMode ? "bg-gray-800" : "bg-white"
                 }`}
               >
-                <div className="p-4">
+                <div className="p-4 sm:p-6">
                   <h3
-                    className={`text-lg font-medium ${
+                    className={`text-lg sm:text-xl font-medium ${
                       isDarkMode ? "text-white" : "text-gray-900"
                     }`}
                   >
                     {product.name}
                   </h3>
                   <p
-                    className={`text-sm mt-1 ${
+                    className={`text-sm sm:text-base mt-1 ${
                       isDarkMode ? "text-gray-400" : "text-gray-600"
                     }`}
                   >
                     {product.description}
                   </p>
-                  <div className="flex justify-between items-center mt-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-2">
                     <div
-                      className={`text-lg font-bold ${
+                      className={`text-lg sm:text-xl font-bold ${
                         isDarkMode ? "text-green-400" : "text-green-600"
                       }`}
                     >
@@ -186,7 +218,7 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
                       })}
                     </div>
                     <div
-                      className={`text-sm ${
+                      className={`text-sm sm:text-base ${
                         isDarkMode ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
@@ -195,21 +227,24 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
                       })}
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleBuy(product.id)}
-                    className={`w-full mt-4 transition-colors duration-200 py-2 px-4 rounded-lg ${
+                  <motion.button
+                    variants={buttonVariants}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    onClick={() => handleDetails(product.id)}
+                    className={`w-full sm:w-fit sm:min-w-[160px] mt-4 sm:mt-6 py-2 sm:py-3 px-4 sm:px-6 transition-colors duration-200 rounded-lg cursor-pointer ${
                       isDarkMode
                         ? "bg-blue-600 hover:bg-blue-700 text-white"
                         : "bg-blue-500 hover:bg-blue-600 text-white"
                     }`}
                   >
-                    {t("category_products.buy_button")}
-                  </button>
+                    {t("category_products.details_button") || "Details"}
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
       )}
     </div>
   );
