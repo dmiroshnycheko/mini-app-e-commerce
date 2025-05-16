@@ -23,6 +23,8 @@ interface Category {
 interface Product {
   id: number;
   categoryId: number;
+  orderId: number;
+  
   category: Category;
   name: string;
   description: string;
@@ -34,6 +36,7 @@ interface Product {
 interface Purchase {
   id: number;
   userId: number;
+  orderId: number;
   user: {
     tgId: string;
     username: string;
@@ -1095,7 +1098,7 @@ const Admin: React.FC = () => {
                         className="hover:bg-gray-50"
                       >
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.id}
+                          {purchase.orderId}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.userId}
