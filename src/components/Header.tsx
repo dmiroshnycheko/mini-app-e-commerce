@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   isDarkMode,
 }) => {
   const navigate = useNavigate();
-  const { role } = useRoleUser();
+  const { role, bonusPercent } = useRoleUser();
   const { t, i18n } = useTranslation();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,11 +28,15 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const toggleProfile = () => {
-    setIsProfileOpen(!isProfileOpen);
+    if (!isMenuOpen) {
+      setIsProfileOpen(!isProfileOpen);
+    }
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    if (!isProfileOpen) {
+      setIsMenuOpen(!isMenuOpen);
+    }
   };
 
   const changeLanguage = (lng: string) => {
@@ -235,7 +239,7 @@ const Header: React.FC<HeaderProps> = ({
             title="Cycle Language"
           >
             <span className="text-lg sm:text-xl">
-              {language === "en" ? "EN" : language === "ru" ? "RU" : "UK"}
+              {language === "en" ? "EN" : language === "ru" ? "RU" : "UA "}
             </span>
           </motion.button>
 
@@ -296,33 +300,34 @@ const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <div className="py-2 w-max">
-              {role === "admin" && (
+                {role === "admin" && (
                   <Link
-                  to="/admin"
-                  className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
-                    isDarkMode ? "text-white" : "text-gray-800"
-                  }`}
-                  onClick={() => setIsProfileOpen(false)}
+                    to="/admin"
+                    className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
+                      isDarkMode ? "text-white" : "text-gray-800"
+                    }`}
+                    onClick={() => setIsProfileOpen(false)}
                   >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2 text-red-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M3 6h18M3 14h18M3 18h18M3 6h18v12H3z"
-                    />
-                  </svg>
-                  <div>
-                    <p>Adminka</p>
-                  </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2 text-red-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 10h18M3 6h18M3 14h18M3 18h18M3 6h18v12H3z"
+                      />
+                    </svg>
+                    <div>
+                      <p>Adminka</p>
+                    </div>
                   </Link>
-                )}                <Link
+                )}{" "}
+                <Link
                   to="/deposit"
                   className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
                     isDarkMode ? "text-white" : "text-gray-800"
@@ -347,7 +352,6 @@ const Header: React.FC<HeaderProps> = ({
                     <p>{t("header.deposit")}</p>
                   </div>
                 </Link>
-
                 <Link
                   to="/purchases"
                   className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
@@ -373,7 +377,6 @@ const Header: React.FC<HeaderProps> = ({
                     <p>{t("header.purchases")}</p>
                   </div>
                 </Link>
-
                 <Link
                   to="/payments"
                   className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
@@ -399,32 +402,33 @@ const Header: React.FC<HeaderProps> = ({
                     <p>{t("header.payments")}</p>
                   </div>
                 </Link>
-
-                <Link
-                  to="/bonus"
-                  className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
-                    isDarkMode ? "text-white" : "text-gray-800"
-                  }`}
-                  onClick={() => setIsProfileOpen(false)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2 text-purple-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                {bonusPercent > 0 && (
+                  <Link
+                    to="/bonus"
+                    className={`flex items-center px-4 py-2 text-sm hover:bg-gray-700 ${
+                      isDarkMode ? "text-white" : "text-gray-800"
+                    }`}
+                    onClick={() => setIsProfileOpen(false)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 20h5v-2a2 2 0 00-2-2h-3m-6 4H7a2 2 0 01-2-2v-2m0-6V6a2 2 0 012-2h10a2 2 0 012 2v6m-6-4V4"
-                    />
-                  </svg>
-                  <div>
-                    <p>{t("header.bonus")}</p>
-                  </div>
-                </Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2 text-purple-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a2 2 0 00-2-2h-3m-6 4H7a2 2 0 01-2-2v-2m0-6V6a2 2 0 012-2h10a2 2 0 012 2v6m-6-4V4"
+                      />
+                    </svg>
+                    <div>
+                      <p>{t("header.bonus")}</p>
+                    </div>
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}

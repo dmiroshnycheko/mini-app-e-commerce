@@ -16,7 +16,8 @@ i18next
       ru: { translation: ruTranslation },
       uk: { translation: ukTranslation },
     },
-    fallbackLng: 'uk', // Default to Ukrainian
+    lng: "en", // Язык по умолчанию — английский
+    fallbackLng: 'en', // Default to Ukrainian
     detection: {
       order: ['navigator', 'htmlTag', 'path', 'subdomain'],
       caches: ['localStorage'],

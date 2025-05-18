@@ -43,14 +43,14 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
 		const initializeUser = async () => {
 			try {
 				const response = await UserService.getCurrentUser()
-				const responseMidificate = {
-					id: Number(response.tgId),
-					name: response.username ?? 'Unknown User',
-					balance: response.balance,
-					bonusBalance: response.bonusBalance,
-					invitedCount: response.invitedCount,
-					bonusPercent: response.bonusPercent,
-				}
+        const responseMidificate = {
+          id: Number(response.tgId),
+          name: response.username ?? response.firstName ?? 'Unknown User',
+          balance: response.balance,
+          bonusBalance: response.bonusBalance,
+          invitedCount: response.invitedCount,
+          bonusPercent: response.bonusPercent,
+        }
 				setUser(responseMidificate)
 			} catch (error) {
 				console.log(error)
@@ -83,7 +83,7 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
 					transition={{ duration: 0.5 }}
 					className='mt-4 text-lg'
 				>
-					{t('home.loading')}
+					{t('common.loading')}
 				</motion.p>
 			</div>
 		)

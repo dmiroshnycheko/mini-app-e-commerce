@@ -72,18 +72,7 @@ const ProductPurchasePage: React.FC<ProductPurchasePageProps> = ({
       .catch((err) => console.error("Copy failed:", err));
   };
 
-  const handleDownload = () => {
-    if (!fileContent || !product) return;
-    const blob = new Blob([fileContent], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${product.name.replace(/\s+/g, "_").toLowerCase()}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  
 
   return (
     <div
@@ -152,16 +141,6 @@ const ProductPurchasePage: React.FC<ProductPurchasePageProps> = ({
                 }`}
               >
                 {t("product_purchase.copy_button")}
-              </button>
-              <button
-                onClick={handleDownload}
-                className={`flex-1 py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 cursor-pointer ${
-                  isDarkMode
-                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                    : "bg-blue-500 hover:bg-blue-600 text-white"
-                }`}
-              >
-                {t("product_purchase.download_button")}
               </button>
             </div>
           </div>

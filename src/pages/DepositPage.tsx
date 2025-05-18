@@ -124,7 +124,7 @@ const DepositPage: React.FC<DepositPageProps> = ({
 									: 'bg-blue-500 hover:bg-blue-600 text-white'
 							}`}
 						>
-							{t('deposit.deposit_button')}
+							{t('payments.deposit_button')}
 						</motion.button>
 					</>
 				) : (

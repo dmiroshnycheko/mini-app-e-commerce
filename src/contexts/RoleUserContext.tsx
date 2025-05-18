@@ -8,6 +8,8 @@ import React, {
 type RoleUserContextType = {
   role: string;
   setRole: (role: string) => void;
+  bonusPercent: number;
+  setBonusPercent: (percent: number) => void;
 };
 
 const RoleUserContext = createContext<RoleUserContextType | undefined>(
@@ -18,9 +20,12 @@ export const RoleUserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [role, setRole] = useState<string>("");
+  const [bonusPercent, setBonusPercent] = useState(0);
 
   return (
-    <RoleUserContext.Provider value={{ role, setRole }}>
+    <RoleUserContext.Provider
+      value={{ role, setRole, setBonusPercent, bonusPercent }}
+    >
       {children}
     </RoleUserContext.Provider>
   );

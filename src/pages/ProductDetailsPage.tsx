@@ -107,19 +107,21 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
         });
         const updatedProduct: Product = purchaseResponse.data;
         setProduct(updatedProduct);
-        toast.success("Покупка успешно завершена!");
-        navigate(`/`);
+        setIsConfirmModalOpen(false);
+        setQuantityToBuy(1);
+        toast.success(t("product_details.purchase_success")); // Используем i18next для перевода
+        // Задержка перед перенаправлением
+        setTimeout(() => {
+          navigate("/");
+        }, 2000); // 2 секунды, чтобы тост был виден
       } catch (error: unknown) {
         console.error("Purchase failed:", error);
         const apiError = error as ApiError;
         if (apiError.response?.data?.error) {
           toast.error(apiError.response.data.error);
         } else {
-          toast.error("Не удалось совершить покупку");
+          toast.error(t("product_details.purchase_failed"));
         }
-      } finally {
-        setIsConfirmModalOpen(false);
-        setQuantityToBuy(1);
       }
     }
   };
@@ -211,9 +213,9 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
           {t("category_products.quantity", { quantity: product.quantity })}
         </p>
         <div className="bg-gray-800 text-white p-4 rounded-lg">
-          <h2 className="text-lg sm:text-xl font-medium mb-2">Описание</h2>
+          <h2 className="text-lg sm:text-xl font-medium mb-2">{t("category_products.description")}</h2>
           <p className="text-sm sm:text-base">{product.description}</p>
-          <h2 className="text-lg sm:text-xl font-medium mt-4 mb-2">Детали</h2>
+          <h2 className="text-lg sm:text-xl font-medium mt-4 mb-2">{t("category_products.details_button")}</h2>
           <pre className="text-sm sm:text-base whitespace-pre-wrap">
             {product.fileContent}
           </pre>

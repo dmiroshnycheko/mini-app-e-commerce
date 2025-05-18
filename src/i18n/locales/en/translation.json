@@ -11,6 +11,8 @@
 		"deposit": "Deposit",
 		"agreement": "Public Offer",
 		"privacy": "Privacy Policy",
+    "privacyText": "PRIVACY POLICY\n\n1. General Provisions\n1.1. This Privacy Policy describes how the Telegram bot (hereinafter – Bot) collects, uses, and protects users' personal data.\n1.2. Using the Bot signifies agreement with this Policy.\n\n2. Information Collection\n2.1. The Bot collects the following information:\n- User's Telegram ID;\n- User's Telegram username;\n- Transaction and purchase data.\n2.2. Information is collected automatically via the Telegram WebApp API.\n\n3. Use of Information\n3.1. Collected data is used for:\n- Providing access to the Bot's features;\n- Processing payments and purchases;\n- Administering the bonus program.\n3.2. Data is not shared with third parties except as required by law.\n\n4. Data Protection\n4.1. The Bot uses modern encryption methods to protect data.\n4.2. Only authorized administration personnel have access to the data.\n\n5. User Rights\n5.1. Users have the right to contact support to request information about their data or to have it deleted.\n\n6. Contact\n6.1. For privacy-related inquiries, contact the support team via the Bot.",
+
 		"support": "Support"
 	},
 	"home": {
@@ -35,6 +37,7 @@
 		"products_count": "{{count}} products"
 	},
 	"category_products": {
+    "description": "Description",
     "details_button": "Details",
 		"title": "{{categoryName}}",
 		"no_products": "No products available in this category",
@@ -44,6 +47,10 @@
 		"confirm_button": "Confirm",
 		"cancel_button": "Cancel"
 	},
+  "product_details": {
+    "purchase_success": "Thank you for your purchase! Your order has been sent to the Telegram bot.",
+    "purchase_failed": "Purchase failed. Please try again later."
+  },
 	"product_purchase": {
 		"title": "Purchase Confirmation",
 		"success_message": "You have successfully purchased {{productName}} for ${{price}}.",
@@ -76,6 +83,7 @@
 		"bonus_percent": "Bonus Percentage: {{percent}}%",
 		"bonus_balance": "Bonus Balance: ${{amount}}",
 		"referral_link_label": "Referral Link",
+		"referral_links": "",
 		"anonymous_link_label": "Anonymous Link",
 		"copy_button": "Copy",
 		"withdraw_button": "Withdraw Bonuses"
@@ -89,7 +97,7 @@
 	},
 	"agreement": {
 		"title": "Public Offer",
-		"agree_button": "Agree"
+    "text": "PUBLIC OFFER\n\nThis Public Offer (hereinafter – Offer) is a proposal to enter into an agreement on the terms set forth below between an individual (hereinafter – User) and the administration of the Telegram bot (hereinafter – Administration).\n\n1. General Provisions\n1.1. This Offer governs the procedure for providing services by the Telegram bot, including but not limited to balance top-up, purchase of digital goods, file uploads, and participation in the bonus program.\n1.2. Use of the Telegram bot constitutes the User’s full and unconditional acceptance of the terms of this Offer.\n\n2. Subject of the Agreement\n2.1. The Administration provides the User with access to the Telegram bot for purchasing digital goods, topping up the balance, participating in the bonus program, and other functions described in the Telegram bot.\n2.2. The User undertakes to use the Telegram bot in accordance with the terms of this Offer and applicable legislation.\n\n3. Rights and Obligations of the Parties\n3.1. The Administration has the right to:\n- Amend the terms of the Offer unilaterally.\n- Suspend the provision of services in case of the User’s violation of the terms of the Offer.\n3.2. The User undertakes to:\n- Provide accurate information when using the Telegram bot.\n- Not use the Telegram bot for illegal purposes.\n\n4. Liability\n4.1. The Administration shall not be liable for any losses caused by the use of the Telegram bot.\n4.2. The User bears full responsibility for maintaining the confidentiality of their data.\n\n5. Term of the Offer\n5.1. The Offer takes effect from the moment of its acceptance by the User and remains in force until the User ceases to use the Telegram bot.\n\n6. Other Conditions\n6.1. All disputes arising in connection with this Offer shall be resolved in accordance with the applicable legislation of Ukraine.\n6.2. In case of any questions, the User may contact the support service via the Telegram bot.\n\nThis Offer is drafted in English and is an official document."
 	},
 	"privacy": {
 		"title": "Privacy Policy"

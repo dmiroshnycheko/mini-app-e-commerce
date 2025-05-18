@@ -76,20 +76,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
 		})
 	}
 
-	const handleDownload = () => {
-		if (!fileContent || !selectedPurchase) return
-		const blob = new Blob([fileContent], { type: 'text/plain' })
-		const url = URL.createObjectURL(blob)
-		const a = document.createElement('a')
-		a.href = url
-		a.download = `${selectedPurchase.product.name
-			.replace(/\s+/g, '_')
-			.toLowerCase()}.txt`
-		document.body.appendChild(a)
-		a.click()
-		document.body.removeChild(a)
-		URL.revokeObjectURL(url)
-	}
+	
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString)
@@ -283,18 +270,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
 									>
 										{t('purchases.copy_button')}
 									</motion.button>
-									<motion.button
-										whileHover={{ scale: 1.05 }}
-										transition={{ duration: 0.2 }}
-										onClick={handleDownload}
-										className={`flex-1 px-4 sm:px-6  rounded-lg transition-colors duration-200 cursor-pointer ${
-											isDarkMode
-												? 'bg-blue-600 hover:bg-blue-700 text-white'
-												: 'bg-blue-500 hover:bg-blue-600 text-white'
-										}`}
-									>
-										{t('purchases.download_button')}
-									</motion.button>
+								
 								</div>
 							</div>
 						</motion.div>

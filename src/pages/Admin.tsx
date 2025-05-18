@@ -24,7 +24,7 @@ interface Product {
   id: number;
   categoryId: number;
   orderId: number;
-  
+
   category: Category;
   name: string;
   description: string;
@@ -88,6 +88,7 @@ const Admin: React.FC = () => {
   const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
   const [confirmMessage, setConfirmMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notificationTitle, setNotificationTitle] = useState(""); // Отдельное состояние для уведомлений
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [editForm, setEditForm] = useState({
     categoryId: "",
@@ -149,16 +150,6 @@ const Admin: React.FC = () => {
     }
   }, [activeTab]);
 
-  const deleteUser = async (id: number) => {
-    try {
-      await $api.delete(`/users/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
-      toast.success("Пользователь удален успешно");
-    } catch (err) {
-      toast.error("Не удалось удалить пользователя");
-    }
-  };
-
   const addCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -169,6 +160,15 @@ const Admin: React.FC = () => {
       toast.success("Категория добавлена успешно");
     } catch (err) {
       toast.error("Не удалось добавить категорию");
+    }
+  };
+  const addNotification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await $api.post("/notification", { notificationTitle });
+      toast.success("Добавлено уведомление");
+    } catch (err) {
+      toast.error("Не удалось добавить уведомление");
     }
   };
 
@@ -414,6 +414,19 @@ const Admin: React.FC = () => {
               variants={buttonVariants}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
+              onClick={() => setActiveTab("notification")}
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md cursor-pointer ${
+                activeTab === "notification"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              Уведомления
+            </motion.button>
+            <motion.button
+              variants={buttonVariants}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={() => setActiveTab("users")}
               className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md cursor-pointer ${
                 activeTab === "users"
@@ -484,6 +497,50 @@ const Admin: React.FC = () => {
           )}
         </AnimatePresence>
 
+        {activeTab === "notification" && (
+          <motion.div
+            variants={cardVariants}
+            className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
+          >
+            <h2 className="text-xl sm:text-xl font-semibold mb-4">
+              Управление Уведомления
+            </h2>
+            <div className="mb-8">
+              <h3 className="text-base sm:text-lg font-medium mb-4">
+                Добавить новые уведомления
+              </h3>
+              <motion.form
+                variants={cardVariants}
+                onSubmit={addNotification}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Текст уведомления
+                  </label>
+                  <input
+                    type="text"
+                    value={notificationTitle}
+                    onChange={(e) => setNotificationTitle(e.target.value)}
+                    required
+                    className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Введите текст уведомления"
+                  />
+                </div>
+
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  type="submit"
+                  className="w-full sm:w-fit sm:min-w-[160px] px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+                >
+                  Добавить уведомление
+                </motion.button>
+              </motion.form>
+            </div>
+          </motion.div>
+        )}
         {activeTab === "categories" && (
           <motion.div
             variants={cardVariants}
@@ -658,20 +715,7 @@ const Admin: React.FC = () => {
                     placeholder="Введите цену"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Количество
-                  </label>
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                    required
-                    min="0"
-                    className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Введите количество"
-                  />
-                </div>
+              
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Тексты
@@ -908,7 +952,7 @@ const Admin: React.FC = () => {
                           </div>
                         ))}
                         <motion.button
-                        type="button" // Добавь это
+                          type="button" // Добавь это
                           variants={buttonVariants}
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
@@ -982,7 +1026,6 @@ const Admin: React.FC = () => {
                         "Invited Count",
                         "Bonus Percent",
                         "Created",
-                        "Actions",
                       ].map((header) => (
                         <th
                           key={header}
@@ -1004,7 +1047,9 @@ const Admin: React.FC = () => {
                           {user.tgId}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {user.username || "Нет имени пользователя"}
+                          {user.username
+                            ? user.username
+                            : user.firstName || "Нет имени пользователя"}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {user.balance.toFixed(2)}
@@ -1026,17 +1071,6 @@ const Admin: React.FC = () => {
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {new Date(user.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm">
-                          <motion.button
-                            variants={buttonVariants}
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.2, ease: "easeOut" }}
-                            onClick={() => deleteUser(user.id)}
-                            className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
-                          >
-                            Удалить
-                          </motion.button>
                         </td>
                       </motion.tr>
                     ))}
@@ -1075,6 +1109,7 @@ const Admin: React.FC = () => {
                       {[
                         "Order ID",
                         "User ID",
+                        "User Name",
                         "Product",
                         "Price",
                         "Quantity",
@@ -1102,6 +1137,11 @@ const Admin: React.FC = () => {
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.userId}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.user.username ||
+                            purchase.user.firstName ||
+                            "Нет имени пользователя"}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.product.name}

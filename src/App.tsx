@@ -86,7 +86,7 @@ declare global {
 const App: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [isDarkMode, setIsDarkMode] = useState(true)
-	const { setRole } = useRoleUser()
+	const { setRole, setBonusPercent } = useRoleUser()
 	const [, setAuthError] = useState<string | null>(null)
 	const { i18n } = useTranslation()
 
@@ -138,6 +138,7 @@ const App: React.FC = () => {
 						}
 						const response = await AuthService.login(loginData)
 						setRole(response.role)
+						setBonusPercent(response.bonusPercent)
 					} catch (error) {
 						console.error('Login error:', error)
 						setAuthError('Failed to authenticate. Please try again.')
@@ -173,6 +174,8 @@ const App: React.FC = () => {
 							}
 							const response = await AuthService.login(loginData)
 							setRole(response.role)
+              setBonusPercent(response.bonusPercent)
+
 						} catch (error) {
 							console.error('Login error:', error)
 							setAuthError('Failed to authenticate. Please try again.')
@@ -190,6 +193,8 @@ const App: React.FC = () => {
 						}
 						const response = await AuthService.login(loginData)
 						setRole(response.role)
+            setBonusPercent(response.bonusPercent)
+
 					} catch (error) {
 						console.error('Login error with hardcoded data:', error)
 						setAuthError('Failed to authenticate. Please try again.')
@@ -200,7 +205,7 @@ const App: React.FC = () => {
 		}
 
 		initializeApp()
-	}, [i18n, setRole])
+	}, [i18n, setRole, setBonusPercent])
 
 	// Function to toggle theme
 	const toggleTheme = () => {
