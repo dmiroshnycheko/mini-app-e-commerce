@@ -46,6 +46,7 @@ interface Purchase {
   productId: number;
   product: {
     name: string;
+    textContent: string[];
   };
   price: number;
   quantity: number;
@@ -1108,6 +1109,7 @@ const Admin: React.FC = () => {
                         "User ID",
                         "User Name",
                         "Product",
+                        "Product text",
                         "Price",
                         "Quantity",
                         "Total",
@@ -1142,6 +1144,9 @@ const Admin: React.FC = () => {
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.product.name}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                            {purchase.fileContent}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.price.toFixed(2)}
