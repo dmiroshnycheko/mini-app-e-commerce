@@ -113,7 +113,7 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
 					transition={{ duration: 0.5 }}
 					className='text-2xl sm:text-3xl font-light mb-2 lg:mb-8 text-center'
 				>
-					{t('home.greeting', { name: user.name })}
+					{t('home.greeting', { name: user.name  })}
 				</motion.h1>
 				<motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
 					<Link

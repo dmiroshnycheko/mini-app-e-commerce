@@ -498,49 +498,49 @@ const Admin: React.FC = () => {
         </AnimatePresence>
 
         {activeTab === "notification" && (
-          <motion.div
-            variants={cardVariants}
-            className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
-          >
-            <h2 className="text-xl sm:text-xl font-semibold mb-4">
-              Управление Уведомления
-            </h2>
-            <div className="mb-8">
-              <h3 className="text-base sm:text-lg font-medium mb-4">
-                Добавить новые уведомления
-              </h3>
-              <motion.form
-                variants={cardVariants}
-                onSubmit={addNotification}
-                className="space-y-4"
-              >
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Текст уведомления
-                  </label>
-                  <input
-                    type="text"
-                    value={notificationTitle}
-                    onChange={(e) => setNotificationTitle(e.target.value)}
-                    required
-                    className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Введите текст уведомления"
-                  />
-                </div>
+  <motion.div
+    variants={cardVariants}
+    className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
+  >
+    <h2 className="text-xl sm:text-xl font-semibold mb-4">
+      Управление Уведомления
+    </h2>
+    <div className="mb-8">
+      <h3 className="text-base sm:text-lg font-medium mb-4">
+        Добавить новые уведомления
+      </h3>
+      <motion.form
+        variants={cardVariants}
+        onSubmit={addNotification}
+        className="space-y-4"
+      >
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Текст уведомления
+          </label>
+          <textarea
+            value={notificationTitle}
+            onChange={(e) => setNotificationTitle(e.target.value)}
+            required
+            className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Введите текст уведомления"
+            rows={4}
+          />
+        </div>
 
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  type="submit"
-                  className="w-full sm:w-fit sm:min-w-[160px] px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
-                >
-                  Добавить уведомление
-                </motion.button>
-              </motion.form>
-            </div>
-          </motion.div>
-        )}
+        <motion.button
+          variants={buttonVariants}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          type="submit"
+          className="w-full sm:w-fit sm:min-w-[160px] px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+        >
+          Добавить уведомление
+        </motion.button>
+      </motion.form>
+    </div>
+  </motion.div>
+)}
         {activeTab === "categories" && (
           <motion.div
             variants={cardVariants}

@@ -169,8 +169,8 @@ const App: React.FC = () => {
 						try {
 							const loginData = {
 								tgId: user.id.toString(),
-								username: user.username || '//',
-								firstName: user.first_name || 'Денис',
+								username: user.username,
+								firstName: user.first_name,
 							}
 							const response = await AuthService.login(loginData)
 							setRole(response.role)
