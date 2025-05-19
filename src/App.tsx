@@ -133,8 +133,8 @@ const App: React.FC = () => {
 					try {
 						const loginData = {
 							tgId: initData.user.id.toString(),
-							username: initData.user.username || '//',
-							firstName: initData.user.first_name || 'Денис',
+							username: initData.user.username,
+							firstName: initData.user.first_name,
 						}
 						const response = await AuthService.login(loginData)
 						setRole(response.role)
