@@ -28,14 +28,16 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const toggleProfile = () => {
-    if (!isMenuOpen) {
-      setIsProfileOpen(!isProfileOpen);
+    setIsProfileOpen(!isProfileOpen);
+    if (!isProfileOpen) {
+      setIsMenuOpen(false);
     }
   };
 
   const toggleMenu = () => {
-    if (!isProfileOpen) {
-      setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(!isMenuOpen);
+    if (!isMenuOpen) {
+      setIsProfileOpen(false);
     }
   };
 
