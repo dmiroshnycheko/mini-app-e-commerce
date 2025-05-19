@@ -725,14 +725,14 @@ const Admin: React.FC = () => {
                       key={index}
                       className="flex items-center space-x-2 mb-2"
                     >
-                      <input
-                        type="text"
+                      <textarea
                         value={text}
                         onChange={(e) =>
                           handleTextChange(index, e.target.value)
                         }
                         className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
                         placeholder={`Текст ${index + 1}`}
+                        rows={3}
                       />
                       {index > 0 && (
                         <motion.button
@@ -897,9 +897,6 @@ const Admin: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Количество
-                        </label>
                         <input
                           type="number"
                           name="quantity"
