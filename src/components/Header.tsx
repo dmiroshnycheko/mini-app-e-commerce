@@ -113,11 +113,11 @@ const Header: React.FC<HeaderProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              className={`absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg top-full ${
+              className={`absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg top-full ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
               }`}
             >
-              <div className="grid grid-cols-2 gap-2 p-2">
+              <div className="grid grid-cols-2 gap-3 p-3">
                 <Link
                   to="/"
                   className={`flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-700 ${
@@ -139,7 +139,9 @@ const Header: React.FC<HeaderProps> = ({
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                  <span className="text-xs">{t("header.home")}</span>
+                  <span className="text-[10px] text-center">
+                    {t("header.home")}
+                  </span>
                 </Link>
 
                 <Link
@@ -163,7 +165,9 @@ const Header: React.FC<HeaderProps> = ({
                       d="M4 6h16M4 10h16M4 14h16M4 18h16"
                     />
                   </svg>
-                  <span className="text-xs">{t("header.catalog")}</span>
+                  <span className="text-[10px] text-center">
+                    {t("header.catalog")}
+                  </span>
                 </Link>
 
                 <Link
@@ -187,7 +191,9 @@ const Header: React.FC<HeaderProps> = ({
                       d="M18.364 5.636a9 9 0 11-12.728 0M12 9v2m0 4h.01"
                     />
                   </svg>
-                  <span className="text-xs">{t("header.support")}</span>
+                  <span className="text-[10px] text-center">
+                    {t("header.support")}
+                  </span>
                 </Link>
 
                 <Link
@@ -211,7 +217,9 @@ const Header: React.FC<HeaderProps> = ({
                       d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <span className="text-xs">{t("header.agreement")}</span>
+                  <span className="text-[10px] text-center">
+                    {t("header.agreement")}
+                  </span>
                 </Link>
               </div>
             </motion.div>

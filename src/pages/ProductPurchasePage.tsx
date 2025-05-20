@@ -128,7 +128,9 @@ const ProductPurchasePage: React.FC<ProductPurchasePageProps> = ({
                   isDarkMode ? "text-green-400" : "text-green-600"
                 }`}
               >
-                {fileContent}
+                {Array.isArray(fileContent)
+                  ? fileContent.join("\n--------------\n")
+                  : fileContent}
               </pre>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">

@@ -155,13 +155,7 @@ const DepositPage: React.FC<DepositPageProps> = ({
 								Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 							</code>
 						</div>
-						<p
-							className={`text-sm sm:text-base mb-4 ${
-								isDarkMode ? 'text-gray-400' : 'text-gray-600'
-							}`}
-						>
-							{t('deposit.confirm_message')}
-						</p>
+			
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							transition={{ duration: 0.2, ease: 'easeOut' }}

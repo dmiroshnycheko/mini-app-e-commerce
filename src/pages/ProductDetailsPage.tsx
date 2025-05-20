@@ -57,6 +57,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [quantityToBuy, setQuantityToBuy] = useState(1);
+  const [file, setFile] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -109,11 +110,10 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
         setProduct(updatedProduct);
         setIsConfirmModalOpen(false);
         setQuantityToBuy(1);
+        setFile(
+          updatedProduct.fileContent.split("\n").join("\n--------------\n")
+        );
         toast.success(t("product_details.purchase_success")); // Используем i18next для перевода
-        // Задержка перед перенаправлением
-        setTimeout(() => {
-          navigate("/");
-        }, 2000); // 2 секунды, чтобы тост был виден
       } catch (error: unknown) {
         console.error("Purchase failed:", error);
         const apiError = error as ApiError;
@@ -201,23 +201,29 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
             <span className="text-lg sm:text-xl font-bold text-green-500">
               {product.price.toFixed(2)}$
             </span>
-            <button
-              onClick={handleBuy}
-              className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              {t("category_products.buy_button")}
-            </button>
+            {!file && (
+              <button
+                onClick={handleBuy}
+                className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                {t("category_products.buy_button")}
+              </button>
+            )}
           </div>
         </div>
         <p className="text-sm sm:text-base text-gray-400 mb-4">
           {t("category_products.quantity", { quantity: product.quantity })}
         </p>
         <div className="bg-gray-800 text-white p-4 rounded-lg">
-          <h2 className="text-lg sm:text-xl font-medium mb-2">{t("category_products.description")}</h2>
+          <h2 className="text-lg sm:text-xl font-medium mb-2">
+            {t("category_products.description")}
+          </h2>
           <p className="text-sm sm:text-base">{product.description}</p>
-          <h2 className="text-lg sm:text-xl font-medium mt-4 mb-2">{t("category_products.details_button")}</h2>
+          <h2 className="text-lg sm:text-xl font-medium mt-4 mb-2">
+            {t("category_products.details_button")}
+          </h2>
           <pre className="text-sm sm:text-base whitespace-pre-wrap">
-            {product.fileContent}
+            {file ? file : product.fileContent}
           </pre>
         </div>
 

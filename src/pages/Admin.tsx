@@ -45,6 +45,7 @@ interface Purchase {
   };
   productId: number;
   product: {
+    price: number;
     name: string;
     textContent: string[];
   };
@@ -897,27 +898,7 @@ const Admin: React.FC = () => {
                           className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
-                      <div>
-                        <input
-                          type="number"
-                          name="quantity"
-                          value={editForm.quantity}
-                          onChange={handleEditFormChange}
-                          required
-                          min="0"
-                          step="1"
-                          className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          onKeyPress={(e) => {
-                            if (
-                              e.key === "e" ||
-                              e.key === "-" ||
-                              e.key === "."
-                            ) {
-                              e.preventDefault();
-                            }
-                          }}
-                        />
-                      </div>
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Тексты
@@ -1146,16 +1127,16 @@ const Admin: React.FC = () => {
                           {purchase.product.name}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                            {purchase.fileContent}
+                          {purchase.fileContent}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.price.toFixed(2)}
+                          {purchase.product.price.toFixed(2)}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {purchase.quantity}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {(purchase.price * purchase.quantity).toFixed(2)}
+                          {purchase.price.toFixed(2)}
                         </td>
                         <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
                           {new Date(purchase.createdAt).toLocaleDateString()}
