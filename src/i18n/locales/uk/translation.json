@@ -54,6 +54,8 @@
 		"download_button": "Скачати файл"
 	},
 	"purchases": {
+    "copy_success": "Успішно скопійовано",
+
 		"title": "Мої покупки",
 		"no_purchases": "У вас ще немає покупок",
 		"no_purchases_message": "Перейдіть до каталогу, щоб вибрати товар",
@@ -88,7 +90,9 @@
 		"amount_label": "Введіть суму поповнення",
 		"instructions_title": "Інструкція з оплати",
 		"instructions_message": "Будь ласка, перекажіть ${{amount}} на наступну адресу TRC20:",
-		"confirm_button": "Підтвердити оплату"
+		"confirm_button": "Підтвердити оплату",
+    "min_amount_error": "Мінімальна сума - $10."
+
 	},
   
   "product_details": {
@@ -104,7 +108,7 @@
 	},
 	"support": {
 		"title": "Підтримка",
-		"contact_message": "Якщо у вас виникли питання або проблеми, звертайтеся до нашої служби підтримки:",
+    "contact_message": "Наш час роботи з 10:00 до 23:00 (GMT+3):",
 		"telegram_label": "Telegram: ",
 		"working_hours": "Час роботи: 9:00–21:00 (UTC+2)"
 	},

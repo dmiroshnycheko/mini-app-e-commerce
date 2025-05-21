@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import { motion } from "framer-motion";
 import $api from "../api/http";
 import { cardVariants, containerVariants } from "../utils/animations";
+import { toast } from "react-toastify";
 
 interface Product {
   id: number;
@@ -68,11 +69,11 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
     setFileContent(purchase.fileContent);
     setShowDetails(true);
   };
-
   const handleCopy = () => {
     if (!fileContent) return;
     navigator.clipboard.writeText(fileContent).then(() => {
       console.log("Copied to clipboard");
+      toast.success(t("purchases.copy_success")); // Ensure you are using toast.success for displaying the notification
     });
   };
 

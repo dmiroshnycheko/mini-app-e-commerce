@@ -64,7 +64,7 @@ const SupportPage: React.FC<SupportPageProps> = ({
               <motion.a
                 whileHover={{ scale: 1.05, textDecoration: "underline" }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                href="https://t.me/support_bot"
+                href="https://t.me/devappleaccounts"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`text-sm sm:text-base ${
@@ -73,7 +73,7 @@ const SupportPage: React.FC<SupportPageProps> = ({
                     : "text-blue-500 hover:text-blue-600"
                 }`}
               >
-                @369963
+                @devappleaccounts 
               </motion.a>
             </div>
           </motion.div>

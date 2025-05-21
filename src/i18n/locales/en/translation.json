@@ -58,6 +58,7 @@
 		"download_button": "Download File"
 	},
 	"purchases": {
+    "copy_success": "Successfully copied",
 		"title": "My Purchases",
 		"no_purchases": "You have no purchases yet",
 		"no_purchases_message": "Go to the catalog to select a product",
@@ -93,7 +94,9 @@
 		"amount_label": "Enter Deposit Amount",
 		"instructions_title": "Payment Instructions",
 		"instructions_message": "Please transfer ${{amount}} to the following TRC20 address:",
-		"confirm_button": "Confirm Payment"
+		"confirm_button": "Confirm Payment",
+    "min_amount_error": "The minimum amount is $10."
+
 	},
 	"agreement": {
 		"title": "Public Offer",
@@ -104,7 +107,7 @@
 	},
 	"support": {
 		"title": "Support",
-		"contact_message": "If you have any questions or issues, contact our support team:",
+    "contact_message": "Our working hours are from 10:00 to 23:00 (GMT+3):",
 		"telegram_label": "Telegram: ",
 		"working_hours": "Working Hours: 9:00–21:00 (UTC+2)"
 	},

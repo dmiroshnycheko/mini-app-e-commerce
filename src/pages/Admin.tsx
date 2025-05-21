@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import $api from "../api/http";
 import { useRoleUser } from "../contexts/RoleUserContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import {
   buttonVariants,
@@ -24,7 +26,6 @@ interface Product {
   id: number;
   categoryId: number;
   orderId: number;
-
   category: Category;
   name: string;
   description: string;
@@ -81,7 +82,6 @@ const Admin: React.FC = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [textContent, setTextContent] = useState<string[]>([""]); // Начальное значение - один пустой элемент
   const [categoryId, setCategoryId] = useState("");
 
   const [activeTab, setActiveTab] = useState("categories");
@@ -92,13 +92,22 @@ const Admin: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notificationTitle, setNotificationTitle] = useState(""); // Отдельное состояние для уведомлений
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [textContent, setTextContent] = useState<string[]>([]);
+  const [isPaused, setIsPaused] = useState(false); // Состояние паузы
   const [editForm, setEditForm] = useState({
     categoryId: "",
     name: "",
     description: "",
     price: "",
     quantity: "",
-    textContent: [""] as string[], // Начальное значение - один пустой элемент
+    textContent: [] as string[],
+  });
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+  const [editCategoryForm, setEditCategoryForm] = useState({
+    name: "",
+    icon: "",
   });
 
   const navigate = useNavigate();
@@ -202,9 +211,8 @@ const Admin: React.FC = () => {
 
   const removeTextField = (index: number) => {
     const newTextContent = textContent.filter((_, i) => i !== index);
-    setTextContent(newTextContent.length ? newTextContent : [""]);
+    setTextContent(newTextContent);
   };
-
   const addProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -221,7 +229,7 @@ const Admin: React.FC = () => {
       setDescription("");
       setPrice("");
       setQuantity("");
-      setTextContent([""]);
+      setTextContent([]); // Устанавливаем пустой массив вместо [""] после успешного добавления
       setCategoryId("");
       toast.success("Продукт добавлен успешно");
     } catch (err) {
@@ -271,6 +279,24 @@ const Admin: React.FC = () => {
     });
   };
 
+  const openCategoryModal = (category: Category) => {
+    setSelectedCategory(category);
+    setEditCategoryForm({
+      name: category.name,
+      icon: category.icon,
+    });
+    setIsModalOpen(true);
+  };
+
+  const closeCategoryModal = () => {
+    setIsModalOpen(false);
+    setSelectedCategory(null);
+    setEditCategoryForm({
+      name: "",
+      icon: "",
+    });
+  };
+
   const handleEditFormChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -286,6 +312,13 @@ const Admin: React.FC = () => {
     } else {
       setEditForm((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  const handleEditCategoryFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setEditCategoryForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const addEditTextField = () => {
@@ -305,10 +338,9 @@ const Admin: React.FC = () => {
     const newTextContent = editForm.textContent.filter((_, i) => i !== index);
     setEditForm((prev) => ({
       ...prev,
-      textContent: newTextContent.length ? newTextContent : [""],
+      textContent: newTextContent,
     }));
   };
-
   const updateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProduct) return;
@@ -331,17 +363,74 @@ const Admin: React.FC = () => {
           quantity: quantityValue,
           textContent: editForm.textContent.filter(
             (text) => text.trim() !== ""
-          ),
+          ), // Оставляем фильтрацию пустых строк
         }
       );
 
       setProducts(
         products.map((p) => (p.id === selectedProduct.id ? response.data : p))
       );
-      toast.success("Продукт обновлен успешно");
       closeProductModal();
+      toast.success("Продукт обновлен успешно");
     } catch (err) {
       toast.error("Не удалось обновить продукт");
+    }
+  };
+
+  const updateCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedCategory) return;
+
+    try {
+      const response = await $api.patch(
+        `/products/category/${selectedCategory.id}`,
+        {
+          name: editCategoryForm.name,
+          icon: editCategoryForm.icon,
+        }
+      );
+      setCategories(
+        categories.map((c) =>
+          c.id === selectedCategory.id ? response.data : c
+        )
+      );
+      closeCategoryModal();
+      toast.success("Категория обновлена успешно");
+    } catch (err) {
+      toast.error("Не удалось обновить категорию");
+    }
+  };
+
+  useEffect(() => {
+    const fetchPauseStatus = async () => {
+      try {
+        const response = await $api.get("/pause/status");
+        setIsPaused(response.data.data.isPaused);
+      } catch (error) {
+        console.error("Failed to fetch pause status:", error);
+        toast.error("Не удалось загрузить статус паузы");
+      }
+    };
+
+    if (role === "admin") {
+      fetchPauseStatus();
+    }
+  }, [role]);
+
+  // Функция для переключения паузы
+  const togglePause = async () => {
+    try {
+      const newPauseState = !isPaused;
+      const response = await $api.post("/pause", { pause: newPauseState });
+      setIsPaused(newPauseState);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      console.error("Failed to toggle pause:", error);
+      if (error.response?.status === 403) {
+        toast.error("Только администраторы могут управлять паузой");
+      } else {
+        toast.error("Не удалось изменить статус паузы");
+      }
     }
   };
 
@@ -386,6 +475,19 @@ const Admin: React.FC = () => {
             >
               Назад
             </motion.button>
+            {/* Кнопка управления паузой */}
+            <div className="mb-6">
+              <motion.button
+                variants={buttonVariants}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                onClick={togglePause}
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 cursor-pointer"
+              >
+                {isPaused ? "Возобновить бота" : "Остановить бота"}
+              </motion.button>
+            </div>
             <motion.button
               variants={buttonVariants}
               whileHover={{ scale: 1.05 }}
@@ -605,14 +707,14 @@ const Admin: React.FC = () => {
                 Категорий не найдено.
               </p>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+              <div className=" gap-4 sm:gap-6">
                 {categories.map((category) => (
                   <motion.div
                     variants={cardVariants}
                     key={category.id}
-                    className="p-2 bg-gray-50 rounded-md shadow-sm flex flex-col sm:flex-row items-center justify-between"
+                    className="p-2 bg-gray-50 rounded-md shadow-sm flex flex-col items-center justify-between"
                   >
-                    <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+                    <div className="flex items-center flex-col space-x-4 mb-4 sm:mb-0">
                       <img
                         src={category.icon}
                         alt={category.name}
@@ -626,15 +728,26 @@ const Admin: React.FC = () => {
                         {category.name}
                       </span>
                     </div>
-                    <motion.button
-                      variants={buttonVariants}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      onClick={() => confirmDeleteCategory(category.id)}
-                      className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
-                    >
-                      Удалить
-                    </motion.button>
+                    <div className="flex space-x-2">
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        onClick={() => openCategoryModal(category)}
+                        className="px-3 py-1.5 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 cursor-pointer"
+                      >
+                        Редактировать
+                      </motion.button>
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        onClick={() => confirmDeleteCategory(category.id)}
+                        className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
+                      >
+                        Удалить
+                      </motion.button>
+                    </div>
                   </motion.div>
                 ))}
               </div>
@@ -717,7 +830,15 @@ const Admin: React.FC = () => {
                     placeholder="Введите цену"
                   />
                 </div>
-
+                <div>
+  <label className="block text-sm font-medium text-gray-700">Количество</label>
+  <input
+    type="number"
+    value={textContent.filter((text) => text.trim() !== "").length}
+    readOnly
+    className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
+  />
+</div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Тексты
@@ -736,21 +857,20 @@ const Admin: React.FC = () => {
                         placeholder={`Текст ${index + 1}`}
                         rows={3}
                       />
-                      {index > 0 && (
-                        <motion.button
-                          variants={buttonVariants}
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          onClick={() => removeTextField(index)}
-                          className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                        >
-                          -
-                        </motion.button>
-                      )}
+                      <motion.button
+                        type="button"
+                        variants={buttonVariants}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        onClick={() => removeTextField(index)}
+                        className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                      >
+                        -
+                      </motion.button>
                     </div>
                   ))}
                   <motion.button
-                    type="button" // Добавь это
+                    type="button"
                     variants={buttonVariants}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
@@ -779,12 +899,12 @@ const Admin: React.FC = () => {
                 Продукты не найдены.
               </p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {products.map((product) => (
                   <motion.div
                     variants={cardVariants}
                     key={product.id}
-                    className="p-2 bg-gray-50 rounded-md shadow-sm flex flex-col sm:flex-row items-center justify-between"
+                    className="p-2 bg-gray-50 rounded-md shadow-sm flex flex-col gap-1  items-center justify-between"
                   >
                     <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                       <span className="font-medium text-sm sm:text-base">
@@ -823,14 +943,17 @@ const Admin: React.FC = () => {
                 ))}
               </div>
             )}
-
-            <AnimatePresence>
-              {isModalOpen && selectedProduct && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-                  <motion.div
-                    variants={modalVariants}
-                    className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-                  >
+          </motion.div>
+        )}
+        <AnimatePresence>
+          {isModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+              <motion.div
+                variants={modalVariants}
+                className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+              >
+                {selectedProduct ? (
+                  <>
                     <h3 className="text-base sm:text-lg font-medium mb-4">
                       Детали продукта
                     </h3>
@@ -898,7 +1021,15 @@ const Admin: React.FC = () => {
                           className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
-
+                      <div>
+  <label className="block text-sm font-medium text-gray-700">Количество</label>
+  <input
+    type="number"
+    value={editForm.textContent.filter((text) => text.trim() !== "").length}
+    readOnly
+    className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
+  />
+</div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Тексты
@@ -917,21 +1048,20 @@ const Admin: React.FC = () => {
                               placeholder={`Текст ${index + 1}`}
                               rows={3}
                             />
-                            {index > 0 && (
-                              <motion.button
-                                variants={buttonVariants}
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.2, ease: "easeOut" }}
-                                onClick={() => removeEditTextField(index)}
-                                className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                              >
-                                -
-                              </motion.button>
-                            )}
+                            <motion.button
+                              type="button"
+                              variants={buttonVariants}
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.2, ease: "easeOut" }}
+                              onClick={() => removeEditTextField(index)}
+                              className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                            >
+                              -
+                            </motion.button>
                           </div>
                         ))}
                         <motion.button
-                          type="button" // Добавь это
+                          type="button"
                           variants={buttonVariants}
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
@@ -963,12 +1093,73 @@ const Admin: React.FC = () => {
                         </motion.button>
                       </div>
                     </motion.form>
-                  </motion.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
+                  </>
+                ) : selectedCategory ? (
+                  <>
+                    <h3 className="text-base sm:text-lg font-medium mb-4">
+                      Редактирование категории
+                    </h3>
+                    <motion.form
+                      variants={cardVariants}
+                      onSubmit={updateCategory}
+                      className="space-y-4"
+                    >
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Название категории
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={editCategoryForm.name}
+                          onChange={handleEditCategoryFormChange}
+                          required
+                          className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Введите название категории"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          URL иконки
+                        </label>
+                        <input
+                          type="url"
+                          name="icon"
+                          value={editCategoryForm.icon}
+                          onChange={handleEditCategoryFormChange}
+                          required
+                          className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Введите URL иконки"
+                        />
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          type="submit"
+                          className="w-full sm:w-fit sm:min-w-[160px] px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+                        >
+                          Сохранить изменения
+                        </motion.button>
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          type="button"
+                          onClick={closeCategoryModal}
+                          className="w-full sm:w-fit sm:min-w-[160px] px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 cursor-pointer"
+                        >
+                          Отмена
+                        </motion.button>
+                      </div>
+                    </motion.form>
+                  </>
+                ) : null}
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         {activeTab === "users" && (
           <motion.div

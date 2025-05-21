@@ -55,6 +55,8 @@
 		"download_button": "Скачать файл"
 	},
 	"purchases": {
+    "copy_success": "Успешно скопировано",
+
 		"title": "Мои покупки",
 		"no_purchases": "У вас еще нет покупок",
 		"no_purchases_message": "Перейдите в каталог, чтобы выбрать товар",
@@ -95,7 +97,9 @@
 		"amount_label": "Введите сумму пополнения",
 		"instructions_title": "Инструкция по оплате",
 		"instructions_message": "Пожалуйста, переведите ${{amount}} на следующий адрес TRC20:",
-		"confirm_button": "Подтвердить оплату"
+		"confirm_button": "Подтвердить оплату",
+    "min_amount_error": "Минимальная сумма - $10."
+
 	},
 	"agreement": {
     "title": "Публічна оферта",
@@ -105,7 +109,7 @@
 	},
 	"support": {
 		"title": "Поддержка",
-		"contact_message": "Если у вас есть вопросы или проблемы, обратитесь в нашу службу поддержки:",
+    "contact_message": "Наши часы работы с 10:00 до 23:00 (GMT+3):",
 		"telegram_label": "Telegram: ",
 		"working_hours": "Часы работы: 9:00–21:00 (UTC+2)"
 	},

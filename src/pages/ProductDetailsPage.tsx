@@ -58,6 +58,13 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [quantityToBuy, setQuantityToBuy] = useState(1);
   const [file, setFile] = useState("");
+  const handleCopy = () => {
+    if (!file) return;
+    navigator.clipboard.writeText(file).then(() => {
+      console.log("Copied to clipboard");
+      toast.success(t("purchases.copy_success")); // Ensure you are using toast.success for displaying the notification
+    });
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -219,12 +226,27 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
             {t("category_products.description")}
           </h2>
           <p className="text-sm sm:text-base">{product.description}</p>
-          <h2 className="text-lg sm:text-xl font-medium mt-4 mb-2">
-            {t("category_products.details_button")}
-          </h2>
+
           <pre className="text-sm sm:text-base whitespace-pre-wrap">
             {file ? file : product.fileContent}
           </pre>
+
+          {file && (
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                onClick={handleCopy}
+                className={`flex-1 py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200 cursor-pointer ${
+                  isDarkMode
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300 text-gray-900"
+                }`}
+              >
+                {t("purchases.copy_button")}
+              </motion.button>
+            </div>
+          )}
         </div>
 
         <AnimatePresence>

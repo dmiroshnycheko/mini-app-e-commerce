@@ -119,7 +119,7 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
     >
       <Header
         title={t("category_products.title", {
-          categoryName: category?.name || "Category",
+          categoryName: category?.name,
         })}
         backButton
         toggleTheme={toggleTheme}
@@ -128,7 +128,7 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
       <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4">
           {t("category_products.title", {
-            categoryName: category?.name || "Category",
+            categoryName: category?.name,
           })}
         </h1>
       </div>
