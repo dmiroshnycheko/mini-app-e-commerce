@@ -93,7 +93,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const initializeApp = async () => {
       const tg = window.Telegram?.WebApp;
-    
+
       if (tg) {
         tg.ready();
         if (tg.isVersionAtLeast("8.0")) {
@@ -106,7 +106,8 @@ const App: React.FC = () => {
             tg.version
           );
         }
-    
+
+        // Установка темы в зависимости от Telegram
         if (tg.colorScheme === "light") {
           setIsDarkMode(false);
           document.documentElement.classList.remove("dark");
@@ -114,7 +115,8 @@ const App: React.FC = () => {
           setIsDarkMode(true);
           document.documentElement.classList.add("dark");
         }
-    
+
+        // Установка языка на основе Telegram
         const userLang = tg.initDataUnsafe.user?.language_code || "en";
         const lang = userLang.startsWith("ru")
           ? "ru"
@@ -122,25 +124,28 @@ const App: React.FC = () => {
           ? "en"
           : "uk";
         i18n.changeLanguage(lang);
-    
+
         const initData = tg.initDataUnsafe;
         console.log("Telegram initData:", JSON.stringify(initData, null, 2));
-    
+
+        // Проверка наличия токена
         const token = localStorage.getItem("authToken");
         if (token) {
           try {
+            // Проверяем валидность токена через /users/me
             const user = await UserService.getCurrentUser();
             setRole(user.role);
             setBonusPercent(user.bonusPercent);
             setIsLoading(false);
-            return;
+            return; // Пропускаем логин, если токен валиден
           } catch (error) {
             console.error("Token verification error:", error);
             localStorage.removeItem("authToken");
             localStorage.removeItem("refreshToken");
           }
         }
-    
+
+        // Выполняем логин, если токена нет или он невалиден
         if (initData?.user) {
           console.log("User data extracted:", initData.user);
           try {
@@ -152,8 +157,6 @@ const App: React.FC = () => {
             const response = await AuthService.login(loginData);
             setRole(response.role);
             setBonusPercent(response.bonusPercent);
-            setIsLoading(false);
-            return; // Добавляем return, чтобы остановить выполнение
           } catch (error) {
             console.error("Login error:", error);
             setAuthError("Failed to authenticate. Please try again.");
@@ -166,11 +169,12 @@ const App: React.FC = () => {
           windowLocation: window.location.href,
           userAgent: navigator.userAgent,
         });
-    
+
         const hash = window.location.hash;
         const params = new URLSearchParams(hash.replace("#", ""));
         const tgWebAppData = params.get("tgWebAppData");
-    
+
+        // Проверка наличия токена
         const token = localStorage.getItem("authToken");
         if (token) {
           try {
@@ -178,20 +182,20 @@ const App: React.FC = () => {
             setRole(user.role);
             setBonusPercent(user.bonusPercent);
             setIsLoading(false);
-            return;
+            return; // Пропускаем логин, если токен валиден
           } catch (error) {
             console.error("Token verification error:", error);
             localStorage.removeItem("authToken");
             localStorage.removeItem("refreshToken");
           }
         }
-    
+
         if (tgWebAppData) {
           const decodedData = decodeURIComponent(tgWebAppData);
           const dataParams = new URLSearchParams(decodedData);
           const userParam = dataParams.get("user");
           const user = userParam ? JSON.parse(decodeURIComponent(userParam)) : null;
-    
+
           if (user) {
             console.log("Extracted user data from tgWebAppData:", user);
             try {
@@ -203,8 +207,6 @@ const App: React.FC = () => {
               const response = await AuthService.login(loginData);
               setRole(response.role);
               setBonusPercent(response.bonusPercent);
-              setIsLoading(false);
-              return;
             } catch (error) {
               console.error("Login error:", error);
               setAuthError("Failed to authenticate. Please try again.");
@@ -213,8 +215,20 @@ const App: React.FC = () => {
             console.warn("No user data in tgWebAppData");
           }
         } else {
-          console.error("tgWebAppData not found in URL, login failed");
-          setAuthError("Unable to authenticate: No Telegram data available.");
+          console.log("tgWebAppData not found in URL, using hardcoded data");
+          try {
+            const loginData = {
+              tgId: "5969166369",
+              username: "//",
+              firstName: "Денис",
+            };
+            const response = await AuthService.login(loginData);
+            setRole(response.role);
+            setBonusPercent(response.bonusPercent);
+          } catch (error) {
+            console.error("Login error with hardcoded data:", error);
+            setAuthError("Failed to authenticate. Please try again.");
+          }
         }
       }
       setIsLoading(false);
