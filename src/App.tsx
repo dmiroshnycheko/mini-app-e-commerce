@@ -91,7 +91,6 @@ const App: React.FC = () => {
   const { i18n } = useTranslation();
   useEffect(() => {
     const initializeApp = async () => {
-      localStorage.clear()
       const tg = window.Telegram?.WebApp;
     
       if (tg) {
