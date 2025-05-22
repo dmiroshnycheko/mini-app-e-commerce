@@ -1,5 +1,10 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
+// Определяем интерфейс для данных ответа, который может содержать поле error
+interface ErrorResponseData {
+  error?: string;
+}
+
 export const API_URL = import.meta.env.VITE_API_URL || 'https://mini-app-e-commerce-back-production-1121.up.railway.app/api';
 
 const $api = axios.create({
@@ -44,7 +49,8 @@ $api.interceptors.response.use(
       console.error('Axios: Request timed out or connection closed for', originalRequest?.url);
     }
 
-    if ((error.response?.status === 401 || error.response?.data?.error === 'jwt malformed') && !originalRequest._retry) {
+    // Явно указываем, что error.response?.data может быть типа ErrorResponseData
+    if ((error.response?.status === 401 || (error.response?.data as ErrorResponseData)?.error === 'jwt malformed') && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const refreshToken = localStorage.getItem("refreshToken");
