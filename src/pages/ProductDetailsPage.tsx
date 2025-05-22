@@ -54,6 +54,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
   // const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [inputValue, setInputValue] = React.useState("1");
   const [error, setError] = useState<string | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [quantityToBuy, setQuantityToBuy] = useState(1);
@@ -100,6 +101,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
       isMounted = false;
     };
   }, [productId]);
+
 
   const handleBuy = () => {
     setQuantityToBuy(1);
@@ -264,42 +266,59 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                   {(product.price * quantityToBuy).toFixed(2)}$
                 </p>
                 <div className="flex items-center mb-4">
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    onClick={() =>
-                      setQuantityToBuy(Math.max(1, quantityToBuy - 1))
-                    }
-                    className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
-                    disabled={quantityToBuy <= 1}
-                  >
-                    -
-                  </motion.button>
-                  <input
-                    type="number"
-                    value={quantityToBuy}
-                    onChange={(e) =>
-                      setQuantityToBuy(
-                        Math.max(1, parseInt(e.target.value) || 1)
-                      )
-                    }
-                    min="1"
-                    className="w-16 mx-2 text-sm sm:text-base text-center border rounded-md p-1"
-                  />
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    onClick={() => setQuantityToBuy(quantityToBuy + 1)}
-                    className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
-                  >
-                    +
-                  </motion.button>
-                  <span className="ml-2 text-sm sm:text-base text-gray-600">
-                    Доступно: {product.quantity}
-                  </span>
-                </div>
+    <motion.button
+      variants={buttonVariants}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      onClick={() => {
+        const newQty = Math.max(1, quantityToBuy - 1);
+        setQuantityToBuy(newQty);
+        setInputValue(newQty.toString());
+      }}
+      className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
+      disabled={quantityToBuy <= 1}
+    >
+      -
+    </motion.button>
+
+    <input
+      type="text"
+      value={inputValue}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+          setInputValue(value);
+        }
+      }}
+      onBlur={() => {
+        const parsed = parseInt(inputValue, 10);
+        if (!isNaN(parsed) && parsed >= 1) {
+          setQuantityToBuy(parsed);
+        } else {
+          setInputValue(quantityToBuy.toString());
+        }
+      }}
+      className="w-16 mx-2 text-sm sm:text-base text-center border rounded-md p-1"
+    />
+
+    <motion.button
+      variants={buttonVariants}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      onClick={() => {
+        const newQty = quantityToBuy + 1;
+        setQuantityToBuy(newQty);
+        setInputValue(newQty.toString());
+      }}
+      className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
+    >
+      +
+    </motion.button>
+
+    <span className="ml-2 text-sm sm:text-base text-gray-600">
+      Доступно: {product.quantity}
+    </span>
+  </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <motion.button
                     variants={buttonVariants}
