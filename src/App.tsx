@@ -91,6 +91,7 @@ const App: React.FC = () => {
   const { i18n } = useTranslation();
   useEffect(() => {
     const initializeApp = async () => {
+      localStorage.clear()
       const tg = window.Telegram?.WebApp;
     
       if (tg) {
@@ -184,6 +185,7 @@ const App: React.FC = () => {
             localStorage.removeItem("refreshToken");
           }
         }
+        
     
         if (tgWebAppData) {
           const decodedData = decodeURIComponent(tgWebAppData);
@@ -214,6 +216,7 @@ const App: React.FC = () => {
         } else {
           console.warn("tgWebAppData not found in URL, no user data to login");
         }
+        
         setIsLoading(false);
       }
     };
