@@ -44,7 +44,7 @@ $api.interceptors.response.use(
       console.error('Axios: Request timed out or connection closed for', originalRequest?.url);
     }
 
-    if ((error.response?.status === 401 || (error.response?.data as { error?: string })?.error === 'jwt malformed') && !originalRequest._retry) {
+    if ((error.response?.status === 401 || error.response?.data?.error === 'jwt malformed') && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const refreshToken = localStorage.getItem("refreshToken");
@@ -76,8 +76,8 @@ $api.interceptors.response.use(
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
         console.log('Axios: Tokens removed after failed refresh at', new Date().toISOString());
-        // Перезапуск авторизации
-        window.location.href = "/login"; // Или страница авторизации
+        // Попытка перезапуска авторизации
+        window.location.href = "/login?retry=true"; // Добавляем параметр для индикации повторного логина
         return Promise.reject(refreshError);
       }
     }
