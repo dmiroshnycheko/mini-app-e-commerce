@@ -44,7 +44,7 @@ $api.interceptors.response.use(
       console.error('Axios: Request timed out or connection closed for', originalRequest?.url);
     }
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if ((error.response?.status === 401 || (error.response?.data as { error?: string })?.error === 'jwt malformed') && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const refreshToken = localStorage.getItem("refreshToken");
@@ -73,15 +73,11 @@ $api.interceptors.response.use(
 
         return $api(originalRequest);
       } catch (refreshError) {
-        if (refreshError instanceof Error) {
-          console.error('Axios: Refresh token error:', refreshError.message, 'at', new Date().toISOString());
-        } else {
-          console.error('Axios: Refresh token error of unknown type at', new Date().toISOString());
-        }
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
         console.log('Axios: Tokens removed after failed refresh at', new Date().toISOString());
-        window.location.href = "/";
+        // Перезапуск авторизации
+        window.location.href = "/login"; // Или страница авторизации
         return Promise.reject(refreshError);
       }
     }
