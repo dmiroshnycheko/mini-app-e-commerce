@@ -213,6 +213,7 @@ const App: React.FC = () => {
             console.warn("No user data in tgWebAppData");
           }
         } else {
+          
           console.warn("tgWebAppData not found in URL, no user data to login");
         }
         

@@ -63,6 +63,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
     if (!file) return;
     navigator.clipboard.writeText(file).then(() => {
       console.log("Copied to clipboard");
+      toast.dismiss(); // Dismiss any existing toasts
       toast.success(t("purchases.copy_success")); // Ensure you are using toast.success for displaying the notification
     });
   };
@@ -101,7 +102,6 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
       isMounted = false;
     };
   }, [productId]);
-
 
   const handleBuy = () => {
     setQuantityToBuy(1);
@@ -266,59 +266,59 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                   {(product.price * quantityToBuy).toFixed(2)}$
                 </p>
                 <div className="flex items-center mb-4">
-    <motion.button
-      variants={buttonVariants}
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      onClick={() => {
-        const newQty = Math.max(1, quantityToBuy - 1);
-        setQuantityToBuy(newQty);
-        setInputValue(newQty.toString());
-      }}
-      className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
-      disabled={quantityToBuy <= 1}
-    >
-      -
-    </motion.button>
+                  <motion.button
+                    variants={buttonVariants}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    onClick={() => {
+                      const newQty = Math.max(1, quantityToBuy - 1);
+                      setQuantityToBuy(newQty);
+                      setInputValue(newQty.toString());
+                    }}
+                    className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
+                    disabled={quantityToBuy <= 1}
+                  >
+                    -
+                  </motion.button>
 
-    <input
-      type="text"
-      value={inputValue}
-      onChange={(e) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value)) {
-          setInputValue(value);
-        }
-      }}
-      onBlur={() => {
-        const parsed = parseInt(inputValue, 10);
-        if (!isNaN(parsed) && parsed >= 1) {
-          setQuantityToBuy(parsed);
-        } else {
-          setInputValue(quantityToBuy.toString());
-        }
-      }}
-      className="w-16 mx-2 text-sm sm:text-base text-center border rounded-md p-1"
-    />
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        setInputValue(value);
+                      }
+                    }}
+                    onBlur={() => {
+                      const parsed = parseInt(inputValue, 10);
+                      if (!isNaN(parsed) && parsed >= 1) {
+                        setQuantityToBuy(parsed);
+                      } else {
+                        setInputValue(quantityToBuy.toString());
+                      }
+                    }}
+                    className="w-16 mx-2 text-sm sm:text-base text-center border rounded-md p-1"
+                  />
 
-    <motion.button
-      variants={buttonVariants}
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      onClick={() => {
-        const newQty = quantityToBuy + 1;
-        setQuantityToBuy(newQty);
-        setInputValue(newQty.toString());
-      }}
-      className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
-    >
-      +
-    </motion.button>
+                  <motion.button
+                    variants={buttonVariants}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    onClick={() => {
+                      const newQty = quantityToBuy + 1;
+                      setQuantityToBuy(newQty);
+                      setInputValue(newQty.toString());
+                    }}
+                    className="px-3 py-1 bg-gray-300 rounded-md hover:bg-gray-400 cursor-pointer"
+                  >
+                    +
+                  </motion.button>
 
-    <span className="ml-2 text-sm sm:text-base text-gray-600">
-      Доступно: {product.quantity}
-    </span>
-  </div>
+                  <span className="ml-2 text-sm sm:text-base text-gray-600">
+                    Доступно: {product.quantity}
+                  </span>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <motion.button
                     variants={buttonVariants}
@@ -336,6 +336,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                     onClick={() => {
                       setIsConfirmModalOpen(false);
                       setQuantityToBuy(1);
+                      setInputValue("1"); // Сбрасываем inputValue до "1"
                     }}
                     className="w-full sm:w-fit sm:min-w-[160px] px-4 sm:px-6 py-2 sm:py-2.5 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 cursor-pointer"
                   >

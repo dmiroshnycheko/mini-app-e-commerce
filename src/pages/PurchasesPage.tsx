@@ -73,6 +73,8 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
     if (!fileContent) return;
     navigator.clipboard.writeText(fileContent).then(() => {
       console.log("Copied to clipboard");
+      toast.dismiss(); // Dismiss any existing toasts
+
       toast.success(t("purchases.copy_success")); // Ensure you are using toast.success for displaying the notification
     });
   };

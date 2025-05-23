@@ -29,6 +29,7 @@ interface Product {
   category: Category;
   name: string;
   description: string;
+  shortDescription: string;
   price: number;
   quantity: number;
   textContent: string[];
@@ -80,6 +81,7 @@ const Admin: React.FC = () => {
   const [icon, setIcon] = useState("");
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -97,6 +99,7 @@ const Admin: React.FC = () => {
   const [editForm, setEditForm] = useState({
     categoryId: "",
     name: "",
+    shortDescription: "",
     description: "",
     price: "",
     quantity: "",
@@ -220,6 +223,7 @@ const Admin: React.FC = () => {
         categoryId,
         name: productName,
         description,
+        shortDescription,
         price: parseFloat(price),
         quantity: parseInt(quantity, 10),
         textContent: textContent.filter((text) => text.trim() !== ""),
@@ -227,6 +231,7 @@ const Admin: React.FC = () => {
       setProducts([...products, response.data]);
       setProductName("");
       setDescription("");
+      setShortDescription("");
       setPrice("");
       setQuantity("");
       setTextContent([]); // Устанавливаем пустой массив вместо [""] после успешного добавления
@@ -259,6 +264,7 @@ const Admin: React.FC = () => {
       categoryId: product.categoryId.toString(),
       name: product.name,
       description: product.description,
+      shortDescription: product.shortDescription,
       price: product.price.toString(),
       quantity: product.quantity.toString(),
       textContent: [...product.textContent],
@@ -275,6 +281,7 @@ const Admin: React.FC = () => {
       description: "",
       price: "",
       quantity: "",
+      shortDescription: "",
       textContent: [""],
     });
   };
@@ -359,6 +366,7 @@ const Admin: React.FC = () => {
           categoryId: parseInt(editForm.categoryId, 10),
           name: editForm.name,
           description: editForm.description,
+          shortDescription: editForm.shortDescription,
           price: parseFloat(editForm.price),
           quantity: quantityValue,
           textContent: editForm.textContent.filter(
@@ -805,6 +813,18 @@ const Admin: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
+                    Короткое описание
+                  </label>
+                  <textarea
+                    value={shortDescription}
+                    onChange={(e) => setShortDescription(e.target.value)}
+                    required
+                    className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Введите описание продукта"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
                     Описание
                   </label>
                   <textarea
@@ -831,14 +851,18 @@ const Admin: React.FC = () => {
                   />
                 </div>
                 <div>
-  <label className="block text-sm font-medium text-gray-700">Количество</label>
-  <input
-    type="number"
-    value={textContent.filter((text) => text.trim() !== "").length}
-    readOnly
-    className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
-  />
-</div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Количество
+                  </label>
+                  <input
+                    type="number"
+                    value={
+                      textContent.filter((text) => text.trim() !== "").length
+                    }
+                    readOnly
+                    className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Тексты
@@ -996,6 +1020,18 @@ const Admin: React.FC = () => {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
+                          Короткое описание
+                        </label>
+                        <textarea
+                          name="shortDescription"
+                          value={editForm.shortDescription}
+                          onChange={handleEditFormChange}
+                          required
+                          className="mt-1 p-2 sm:p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
                           Описание
                         </label>
                         <textarea
@@ -1022,14 +1058,20 @@ const Admin: React.FC = () => {
                         />
                       </div>
                       <div>
-  <label className="block text-sm font-medium text-gray-700">Количество</label>
-  <input
-    type="number"
-    value={editForm.textContent.filter((text) => text.trim() !== "").length}
-    readOnly
-    className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
-  />
-</div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Количество
+                        </label>
+                        <input
+                          type="number"
+                          value={
+                            editForm.textContent.filter(
+                              (text) => text.trim() !== ""
+                            ).length
+                          }
+                          readOnly
+                          className="mt-1 p-2 sm:p-3 w-full border rounded-md bg-gray-100"
+                        />
+                      </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Тексты

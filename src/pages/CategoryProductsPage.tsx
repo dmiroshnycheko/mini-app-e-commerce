@@ -29,6 +29,7 @@ interface Product {
   category: Category;
   name: string;
   description: string;
+  shortDescription?: string;
   price: number;
   quantity: number;
   fileContent: string;
@@ -197,7 +198,7 @@ const CategoryProductsPage: React.FC<CategoryProductsPageProps> = ({
                       isDarkMode ? "text-gray-400" : "text-gray-600"
                     }`}
                   >
-                    {product.description}
+                    {product.shortDescription}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-2">
                     <div
