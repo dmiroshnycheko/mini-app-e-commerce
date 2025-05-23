@@ -73,9 +73,23 @@ const SupportPage: React.FC<SupportPageProps> = ({
                     : "text-blue-500 hover:text-blue-600"
                 }`}
               >
-                @devappleaccounts 
+                @devappleaccounts
               </motion.a>
             </div>
+            <motion.a
+              href="https://t.me/devappleaccounts"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className={`inline-block mt-4 px-6 py-2 rounded-lg text-sm sm:text-base font-medium ${
+                isDarkMode
+                  ? "bg-blue-600 text-white hover:bg-blue-500"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              {t("support.title")}
+            </motion.a>
           </motion.div>
         </motion.div>
       </div>

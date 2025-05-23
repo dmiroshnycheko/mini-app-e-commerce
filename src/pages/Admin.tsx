@@ -171,6 +171,7 @@ const Admin: React.FC = () => {
       setCategories([...categories, response.data]);
       setName("");
       setIcon("");
+      toast.dismiss()
       toast.success("Категория добавлена успешно");
     } catch (err) {
       toast.error("Не удалось добавить категорию");
@@ -180,6 +181,8 @@ const Admin: React.FC = () => {
     e.preventDefault();
     try {
       await $api.post("/notification", { notificationTitle });
+      toast.dismiss()
+
       toast.success("Добавлено уведомление");
     } catch (err) {
       toast.error("Не удалось добавить уведомление");
@@ -192,6 +195,8 @@ const Admin: React.FC = () => {
       try {
         await $api.delete(`/products/category/${id}`);
         setCategories(categories.filter((category) => category.id !== id));
+        toast.dismiss()
+
         toast.success("Категория успешно удалена");
       } catch (err) {
         toast.error("Не удалось удалить категорию");
@@ -236,6 +241,8 @@ const Admin: React.FC = () => {
       setQuantity("");
       setTextContent([]); // Устанавливаем пустой массив вместо [""] после успешного добавления
       setCategoryId("");
+      toast.dismiss()
+
       toast.success("Продукт добавлен успешно");
     } catch (err) {
       toast.error("Не удалось добавить продукт");
@@ -248,6 +255,8 @@ const Admin: React.FC = () => {
       try {
         await $api.delete(`/products/product/${id}`);
         setProducts(products.filter((product) => product.id !== id));
+        toast.dismiss()
+
         toast.success("Продукт успешно удален");
       } catch (err) {
         toast.error("Не удалось удалить продукт");
@@ -355,6 +364,8 @@ const Admin: React.FC = () => {
     const quantityValue = parseInt(editForm.quantity, 10);
 
     if (isNaN(quantityValue) || quantityValue < 0) {
+      toast.dismiss()
+
       toast.error("Количество должно быть допустимым неотрицательным числом");
       return;
     }
@@ -379,6 +390,8 @@ const Admin: React.FC = () => {
         products.map((p) => (p.id === selectedProduct.id ? response.data : p))
       );
       closeProductModal();
+      toast.dismiss()
+
       toast.success("Продукт обновлен успешно");
     } catch (err) {
       toast.error("Не удалось обновить продукт");
@@ -403,6 +416,8 @@ const Admin: React.FC = () => {
         )
       );
       closeCategoryModal();
+      toast.dismiss()
+
       toast.success("Категория обновлена успешно");
     } catch (err) {
       toast.error("Не удалось обновить категорию");
@@ -431,6 +446,8 @@ const Admin: React.FC = () => {
       const newPauseState = !isPaused;
       const response = await $api.post("/pause", { pause: newPauseState });
       setIsPaused(newPauseState);
+      toast.dismiss()
+
       toast.success(response.data.message);
     } catch (error: any) {
       console.error("Failed to toggle pause:", error);
