@@ -1390,7 +1390,15 @@ const Admin: React.FC = () => {
                   {purchase.price.toFixed(2)}
                 </td>
                 <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {new Date(purchase.createdAt).toLocaleDateString()}
+                    {new Date(purchase.createdAt).toLocaleString("uk-UA", {
+                    timeZone: "Europe/Kiev",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    })}
                 </td>
               </motion.tr>
             ))}
