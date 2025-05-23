@@ -116,5 +116,11 @@
 		"title": "Page Not Found",
 		"message": "Sorry, the page you are looking for does not exist or has been moved.",
 		"home_button": "Back to Home"
-	}
+	},
+  
+    "paused": {
+      "title": "Application Paused",
+      "message": "The application is temporarily paused. Please try again later."
+    }
+  
 }

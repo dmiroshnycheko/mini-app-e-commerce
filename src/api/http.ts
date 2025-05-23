@@ -1,5 +1,4 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { toast } from "react-toastify";
 
 // Определяем интерфейс для данных ответа, который может содержать поля error и message
 interface ErrorResponseData {
@@ -51,11 +50,15 @@ $api.interceptors.response.use(
       console.error('Axios: Request timed out or connection closed for', originalRequest?.url);
     }
     if (error.response?.status === 503) {
-      console.log('Axios: Application paused, showing toast for', originalRequest?.url, 'at', new Date().toISOString());
-      toast.error(
-        (error.response?.data as ErrorResponseData)?.message || 'Приложение приостановлено. Пожалуйста, попробуйте позже.',
-        { toastId: 'app-paused' }
+      console.log(
+        "Axios: Application paused, redirecting to /paused for",
+        originalRequest?.url,
+        "at",
+        new Date().toISOString()
       );
+      // Redirect to the paused page
+      window.location.href = "/paused";
+      return Promise.reject(error);
     }
 
     // Явно указываем, что error.response?.data может быть типа ErrorResponseData
