@@ -6,7 +6,7 @@ interface PausedPageProps {
   isDarkMode: boolean;
 }
 
-const PausedPage: React.FC<PausedPageProps> = ({ toggleTheme, isDarkMode }) => {
+const PausedPage: React.FC<PausedPageProps> = ({ isDarkMode }) => {
   const { t } = useTranslation();
 
   return (
@@ -23,16 +23,6 @@ const PausedPage: React.FC<PausedPageProps> = ({ toggleTheme, isDarkMode }) => {
           {t("paused.message") ||
             "The application is temporarily paused. Please try again later."}
         </p>
-        <button
-          onClick={toggleTheme}
-          className={`px-4 py-2 rounded-md ${
-            isDarkMode
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-blue-600 text-white hover:bg-blue-700"
-          }`}
-        >
-          {t("common.toggleTheme") || "Toggle Theme"}
-        </button>
       </div>
     </div>
   );
