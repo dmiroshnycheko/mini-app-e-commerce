@@ -302,7 +302,7 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/paused"
+            path="/pausedd-page"
             element={
               <PausedPage toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
             }

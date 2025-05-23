@@ -57,7 +57,7 @@ $api.interceptors.response.use(
         new Date().toISOString()
       );
       // Redirect to the paused page
-      window.location.href = "/paused";
+      window.location.href = "/pausedd-page";
       return Promise.reject(error);
     }
 
