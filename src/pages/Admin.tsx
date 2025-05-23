@@ -50,13 +50,13 @@ interface Purchase {
     price: number;
     name: string;
     textContent: string[];
-  };
+  } | null; // Продукт может быть null
+  productName: string; // Новое поле
   price: number;
   quantity: number;
   fileContent: string;
   createdAt: string;
 }
-
 const Admin: React.FC = () => {
   const [users, setUsers] = useState<
     {
@@ -1310,95 +1310,96 @@ const Admin: React.FC = () => {
           </motion.div>
         )}
 
-        {activeTab === "orders" && (
-          <motion.div
-            variants={cardVariants}
-            className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
-          >
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">
-              Управление заказами
-            </h2>
-            <h3 className="text-base sm:text-lg font-medium mb-4">
-              Существующие заказы
-            </h3>
-            {purchases.length === 0 ? (
-              <p className="text-gray-500 text-sm sm:text-base">
-                Заказов не найдено.
-              </p>
-            ) : (
-              <div className="overflow-x-auto">
-                <motion.table
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="min-w-full border-collapse border border-gray-200"
+{activeTab === "orders" && (
+  <motion.div
+    variants={cardVariants}
+    className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
+  >
+    <h2 className="text-lg sm:text-xl font-semibold mb-4">
+      Управление заказами
+    </h2>
+    <h3 className="text-base sm:text-lg font-medium mb-4">
+      Существующие заказы
+    </h3>
+    {purchases.length === 0 ? (
+      <p className="text-gray-500 text-sm sm:text-base">
+        Заказов не найдено.
+      </p>
+    ) : (
+      <div className="overflow-x-auto">
+        <motion.table
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="min-w-full border-collapse border border-gray-200"
+        >
+          <motion.thead variants={headerVariants}>
+            <tr className="bg-gray-100">
+              {[
+                "Order ID",
+                "User ID",
+                "User Name",
+                "Product",
+                "Product text",
+                "Price",
+                "Quantity",
+                "Total",
+                "Order Date",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-left text-sm font-medium text-gray-700"
                 >
-                  <motion.thead variants={headerVariants}>
-                    <tr className="bg-gray-100">
-                      {[
-                        "Order ID",
-                        "User ID",
-                        "User Name",
-                        "Product",
-                        "Product text",
-                        "Price",
-                        "Quantity",
-                        "Total",
-                        "Order Date",
-                      ].map((header) => (
-                        <th
-                          key={header}
-                          className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-left text-sm font-medium text-gray-700"
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </motion.thead>
-                  <motion.tbody>
-                    {purchases.map((purchase) => (
-                      <motion.tr
-                        variants={rowVariants}
-                        key={purchase.id}
-                        className="hover:bg-gray-50"
-                      >
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.orderId}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.userId}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.user.username ||
-                            purchase.user.firstName ||
-                            "Нет имени пользователя"}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.product.name}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.fileContent}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.product.price.toFixed(2)}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.quantity}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {purchase.price.toFixed(2)}
-                        </td>
-                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                          {new Date(purchase.createdAt).toLocaleDateString()}
-                        </td>
-                      </motion.tr>
-                    ))}
-                  </motion.tbody>
-                </motion.table>
-              </div>
-            )}
-          </motion.div>
-        )}
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </motion.thead>
+          <motion.tbody>
+            {purchases.map((purchase) => (
+              <motion.tr
+                variants={rowVariants}
+                key={purchase.id}
+                className="hover:bg-gray-50"
+              >
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.orderId}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.userId}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.user.username ||
+                    purchase.user.firstName ||
+                    "Нет имени пользователя"}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.productName} {/* Используем productName */}
+                  {purchase.product ? "" : ` (Удален, ID: ${purchase.productId})`}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.fileContent}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.product ? purchase.product.price.toFixed(2) : "N/A"}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.quantity}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {purchase.price.toFixed(2)}
+                </td>
+                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                  {new Date(purchase.createdAt).toLocaleDateString()}
+                </td>
+              </motion.tr>
+            ))}
+          </motion.tbody>
+        </motion.table>
+      </div>
+    )}
+  </motion.div>
+)}
       </motion.div>
     </div>
   );
