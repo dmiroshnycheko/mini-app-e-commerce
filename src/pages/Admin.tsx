@@ -171,7 +171,7 @@ const Admin: React.FC = () => {
       setCategories([...categories, response.data]);
       setName("");
       setIcon("");
-      toast.dismiss()
+      toast.dismiss();
       toast.success("Категория добавлена успешно");
     } catch (err) {
       toast.error("Не удалось добавить категорию");
@@ -181,7 +181,7 @@ const Admin: React.FC = () => {
     e.preventDefault();
     try {
       await $api.post("/notification", { notificationTitle });
-      toast.dismiss()
+      toast.dismiss();
 
       toast.success("Добавлено уведомление");
     } catch (err) {
@@ -195,7 +195,7 @@ const Admin: React.FC = () => {
       try {
         await $api.delete(`/products/category/${id}`);
         setCategories(categories.filter((category) => category.id !== id));
-        toast.dismiss()
+        toast.dismiss();
 
         toast.success("Категория успешно удалена");
       } catch (err) {
@@ -241,7 +241,7 @@ const Admin: React.FC = () => {
       setQuantity("");
       setTextContent([]); // Устанавливаем пустой массив вместо [""] после успешного добавления
       setCategoryId("");
-      toast.dismiss()
+      toast.dismiss();
 
       toast.success("Продукт добавлен успешно");
     } catch (err) {
@@ -255,7 +255,7 @@ const Admin: React.FC = () => {
       try {
         await $api.delete(`/products/product/${id}`);
         setProducts(products.filter((product) => product.id !== id));
-        toast.dismiss()
+        toast.dismiss();
 
         toast.success("Продукт успешно удален");
       } catch (err) {
@@ -364,7 +364,7 @@ const Admin: React.FC = () => {
     const quantityValue = parseInt(editForm.quantity, 10);
 
     if (isNaN(quantityValue) || quantityValue < 0) {
-      toast.dismiss()
+      toast.dismiss();
 
       toast.error("Количество должно быть допустимым неотрицательным числом");
       return;
@@ -390,7 +390,7 @@ const Admin: React.FC = () => {
         products.map((p) => (p.id === selectedProduct.id ? response.data : p))
       );
       closeProductModal();
-      toast.dismiss()
+      toast.dismiss();
 
       toast.success("Продукт обновлен успешно");
     } catch (err) {
@@ -416,7 +416,7 @@ const Admin: React.FC = () => {
         )
       );
       closeCategoryModal();
-      toast.dismiss()
+      toast.dismiss();
 
       toast.success("Категория обновлена успешно");
     } catch (err) {
@@ -446,7 +446,7 @@ const Admin: React.FC = () => {
       const newPauseState = !isPaused;
       const response = await $api.post("/pause", { pause: newPauseState });
       setIsPaused(newPauseState);
-      toast.dismiss()
+      toast.dismiss();
 
       toast.success(response.data.message);
     } catch (error: any) {
@@ -1310,104 +1310,109 @@ const Admin: React.FC = () => {
           </motion.div>
         )}
 
-{activeTab === "orders" && (
-  <motion.div
-    variants={cardVariants}
-    className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
-  >
-    <h2 className="text-lg sm:text-xl font-semibold mb-4">
-      Управление заказами
-    </h2>
-    <h3 className="text-base sm:text-lg font-medium mb-4">
-      Существующие заказы
-    </h3>
-    {purchases.length === 0 ? (
-      <p className="text-gray-500 text-sm sm:text-base">
-        Заказов не найдено.
-      </p>
-    ) : (
-      <div className="overflow-x-auto">
-        <motion.table
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="min-w-full border-collapse border border-gray-200"
-        >
-          <motion.thead variants={headerVariants}>
-            <tr className="bg-gray-100">
-              {[
-                "Order ID",
-                "User ID",
-                "User Name",
-                "Product",
-                "Product text",
-                "Price",
-                "Quantity",
-                "Total",
-                "Order Date",
-              ].map((header) => (
-                <th
-                  key={header}
-                  className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-left text-sm font-medium text-gray-700"
+        {activeTab === "orders" && (
+          <motion.div
+            variants={cardVariants}
+            className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-md"
+          >
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">
+              Управление заказами
+            </h2>
+            <h3 className="text-base sm:text-lg font-medium mb-4">
+              Существующие заказы
+            </h3>
+            {purchases.length === 0 ? (
+              <p className="text-gray-500 text-sm sm:text-base">
+                Заказов не найдено.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <motion.table
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="min-w-full border-collapse border border-gray-200"
                 >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </motion.thead>
-          <motion.tbody>
-            {purchases.map((purchase) => (
-              <motion.tr
-                variants={rowVariants}
-                key={purchase.id}
-                className="hover:bg-gray-50"
-              >
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.orderId}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.userId}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.user.username ||
-                    purchase.user.firstName ||
-                    "Нет имени пользователя"}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.productName} {/* Используем productName */}
-                  {purchase.product ? "" : ` (Удален, ID: ${purchase.productId})`}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.fileContent}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.product ? purchase.product.price.toFixed(2) : "N/A"}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.quantity}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                  {purchase.price.toFixed(2)}
-                </td>
-                <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
-                    {new Date(purchase.createdAt).toLocaleString("uk-UA", {
-                    timeZone: "Europe/Kiev",
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    })}
-                </td>
-              </motion.tr>
-            ))}
-          </motion.tbody>
-        </motion.table>
-      </div>
-    )}
-  </motion.div>
-)}
+                  <motion.thead variants={headerVariants}>
+                    <tr className="bg-gray-100">
+                      {[
+                        "Order ID",
+                        "User ID",
+                        "User Name",
+                        "Product",
+                        "Product text",
+                        "Price",
+                        "Quantity",
+                        "Total",
+                        "Order Date",
+                      ].map((header) => (
+                        <th
+                          key={header}
+                          className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-left text-sm font-medium text-gray-700"
+                        >
+                          {header}
+                        </th>
+                      ))}
+                    </tr>
+                  </motion.thead>
+                  <motion.tbody>
+                    {purchases.map((purchase) => (
+                      <motion.tr
+                        variants={rowVariants}
+                        key={purchase.id}
+                        className="hover:bg-gray-50"
+                      >
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.orderId}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.userId}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.user.username ||
+                            purchase.user.firstName ||
+                            "Нет имени пользователя"}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.productName} {/* Используем productName */}
+                          {purchase.product ? "" : ` (Удален)`}{" "}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.fileContent}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.product
+                            ? purchase.product.price.toFixed(2)
+                            : (Number(purchase.price.toFixed(2)) / purchase.quantity)}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.quantity}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {purchase.price.toFixed(2)}
+                        </td>
+                        <td className="border border-gray-200 px-2 sm:px-4 py-1.5 sm:py-2 text-sm text-gray-600">
+                          {new Date(purchase.createdAt).toLocaleString(
+                            "uk-UA",
+                            {
+                              timeZone: "Europe/Kiev",
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            }
+                          )}
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </motion.tbody>
+                </motion.table>
+              </div>
+            )}
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
