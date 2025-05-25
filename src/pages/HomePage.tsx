@@ -202,6 +202,7 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          style={{ whiteSpace: 'pre-line' }}
         >
           {t("home.featured_title", {
             1: `<span className="${
