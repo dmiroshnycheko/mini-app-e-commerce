@@ -56,12 +56,10 @@ $api.interceptors.response.use(
         "at",
         new Date().toISOString()
       );
-      // Redirect to the paused page
       window.location.href = "/pausedd-page";
       return Promise.reject(error);
     }
 
-    // Явно указываем, что error.response?.data может быть типа ErrorResponseData
     if ((error.response?.status === 401 || (error.response?.data as ErrorResponseData)?.error === 'jwt malformed') && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
@@ -91,12 +89,77 @@ $api.interceptors.response.use(
 
         return $api(originalRequest);
       } catch (refreshError) {
+        console.error('Axios: Token refresh failed:', refreshError, 'at', new Date().toISOString());
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
-        console.log('Axios: Tokens removed after failed refresh at', new Date().toISOString());
-        // Попытка перезапуска авторизации
-        window.location.href = "/login?retry=true"; // Добавляем параметр для индикации повторного логина
-        return Promise.reject(refreshError);
+
+        // Попытка повторного логина через POST /login
+        try {
+          const tg = window.Telegram?.WebApp;
+          let loginData;
+
+          if (tg && tg.initDataUnsafe?.user) {
+            // Данные из Telegram
+            loginData = {
+              tgId: tg.initDataUnsafe.user.id.toString(),
+              username: tg.initDataUnsafe.user.username,
+              firstName: tg.initDataUnsafe.user.first_name,
+            };
+            console.log('Axios: Using Telegram user data for login:', loginData, 'at', new Date().toISOString());
+          } else {
+            // Проверка URL для tgWebAppData (как в App.tsx)
+            const hash = window.location.hash;
+            const params = new URLSearchParams(hash.replace("#", ""));
+            const tgWebAppData = params.get("tgWebAppData");
+
+            if (tgWebAppData) {
+              const decodedData = decodeURIComponent(tgWebAppData);
+              const dataParams = new URLSearchParams(decodedData);
+              const userParam = dataParams.get("user");
+              const user = userParam ? JSON.parse(decodeURIComponent(userParam)) : null;
+
+              if (user) {
+                loginData = {
+                  tgId: user.id.toString(),
+                  username: user.username,
+                  firstName: user.first_name,
+                };
+                console.log('Axios: Using tgWebAppData user data for login:', loginData, 'at', new Date().toISOString());
+              }
+            }
+          }
+
+          if (!loginData) {
+            console.warn('Axios: No user data available for login, redirecting to /login', 'at', new Date().toISOString());
+            window.location.href = "/login?retry=true";
+            return Promise.reject(refreshError);
+          }
+
+          // Отправляем POST-запрос на /login
+          const loginResponse = await axios.post(
+            `${API_URL}/auth/login`,
+            loginData,
+            {
+              headers: { "Content-Type": "application/json" },
+              timeout: 15000,
+            }
+          );
+
+          const { accessToken, refreshToken: newRefreshToken } = loginResponse.data;
+          console.log('Axios: Login successful, new tokens received:', { accessToken: accessToken.substring(0, 10) + '...', newRefreshToken: newRefreshToken.substring(0, 10) + '...' }, 'at', new Date().toISOString());
+          localStorage.setItem("authToken", accessToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
+
+          originalRequest.headers = originalRequest.headers || {};
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          console.log('Axios: Retrying original request after login at', new Date().toISOString());
+
+          return $api(originalRequest);
+        } catch (loginError) {
+          console.error('Axios: Login failed:', loginError, 'at', new Date().toISOString());
+          window.location.href = "/login?retry=true";
+          return Promise.reject(loginError);
+        }
       }
     }
 
