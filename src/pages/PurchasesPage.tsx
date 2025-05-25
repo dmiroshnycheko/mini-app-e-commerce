@@ -26,8 +26,9 @@ interface Purchase {
   productId: number;
   price: number;
   fileContent: string;
+  productName: string;
   createdAt: string;
-  product: Product;
+  product: Product | null; // Изменено, чтобы учитывать null
 }
 
 interface PurchasesPageProps {
@@ -43,9 +44,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
   const navigate = useNavigate();
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(
-    null
-  );
+  const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null);
   const [fileContent, setFileContent] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -69,13 +68,13 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
     setFileContent(purchase.fileContent);
     setShowDetails(true);
   };
+
   const handleCopy = () => {
     if (!fileContent) return;
     navigator.clipboard.writeText(fileContent).then(() => {
       console.log("Copied to clipboard");
-      toast.dismiss(); // Dismiss any existing toasts
-
-      toast.success(t("purchases.copy_success")); // Ensure you are using toast.success for displaying the notification
+      toast.dismiss();
+      toast.success(t("purchases.copy_success"));
     });
   };
 
@@ -168,7 +167,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
                       }`}
                     >
                       <h3 className="text-lg sm:text-xl font-medium">
-                        {purchase.product.name}
+                        {purchase.product?.name || purchase.productName || t("purchases.deleted_product")} {/* Добавлена проверка */}
                       </h3>
                       <div className="flex justify-between items-center mt-2">
                         <div
@@ -217,7 +216,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
               >
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg sm:text-xl font-medium">
-                    {selectedPurchase?.product.name}
+                    {selectedPurchase?.product?.name || selectedPurchase?.productName || t("purchases.deleted_product")} {/* Добавлена проверка */}
                   </h3>
                   <motion.button
                     whileHover={{ scale: 1.2 }}
@@ -255,7 +254,8 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
                       isDarkMode ? "text-green-400" : "text-green-600"
                     }`}
                   >
-                    {fileContent?.split("\n").join("\n--------------\n")}</pre>
+                    {fileContent?.split("\n").join("\n--------------\n")}
+                  </pre>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <motion.button
