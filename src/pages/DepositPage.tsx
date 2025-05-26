@@ -164,7 +164,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ toggleTheme, isDarkMode }) =>
               }`}
             >
               <code className="text-sm sm:text-base break-all">
-                Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+              TFFKjJs48xfaBH8eF7HFvSQmLwPsx5SSVV
               </code>
             </div>
             <motion.button

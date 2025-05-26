@@ -228,20 +228,20 @@ const App: React.FC = () => {
             console.warn("No user data in tgWebAppData");
           }
         } else {
-          console.log("tgWebAppData not found in URL, using hardcoded data");
-          try {
-            const loginData = {
-              tgId: "5969166369",
-              username: "denis_user", // Replace '//' with a valid username
-              firstName: "Денис",
-            };
-            const response = await AuthService.login(loginData);
-            setRole(response.role);
-            setBonusPercent(response.bonusPercent);
-          } catch (error) {
-            console.error("Login error:", error);
-            setAuthError("Failed to authenticate. Please try again.");
-          }
+          // console.log("tgWebAppData not found in URL, using hardcoded data");
+          // try {
+          //   const loginData = {
+          //     tgId: "5969166369",
+          //     username: "denis_user", // Replace '//' with a valid username
+          //     firstName: "Денис",
+          //   };
+          //   const response = await AuthService.login(loginData);
+          //   setRole(response.role);
+          //   setBonusPercent(response.bonusPercent);
+          // } catch (error) {
+          //   console.error("Login error:", error);
+          //   setAuthError("Failed to authenticate. Please try again.");
+          // }
           console.warn("tgWebAppData not found in URL, no user data to login");
         }
 
