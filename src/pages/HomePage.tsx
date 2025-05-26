@@ -137,16 +137,18 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
             {t("home.balance", { amount: Number(user.balance).toFixed(2) })}
           </span>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className={`text-sm mt-2 ${
-            isDarkMode ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          {t("home.bonus_balance", { amount: user.bonusBalance })}
-        </motion.div>
+        {user.bonusPercent > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className={`text-sm mt-2 ${
+              isDarkMode ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            {t("home.bonus_balance", { amount: user.bonusBalance })}
+          </motion.div>
+        )}
       </div>
 
       {/* <div className="grid grid-cols-2 gap-4 p-4 w-full">
@@ -202,7 +204,7 @@ const HomePage: React.FC<HomePageProps> = ({ toggleTheme, isDarkMode }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          style={{ whiteSpace: 'pre-line' }}
+          style={{ whiteSpace: "pre-line" }}
         >
           {t("home.featured_title", {
             1: `<span className="${
