@@ -120,7 +120,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
         setIsConfirmModalOpen(false);
         setQuantityToBuy(1);
         setFile(
-          updatedProduct.fileContent.split("\n").join("\n--------------\n")
+          updatedProduct.fileContent
         );
         toast.success(t("product_details.purchase_success")); // Используем i18next для перевода
       } catch (error: unknown) {

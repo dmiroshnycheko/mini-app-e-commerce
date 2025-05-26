@@ -254,7 +254,7 @@ const PurchasesPage: React.FC<PurchasesPageProps> = ({
                       isDarkMode ? "text-green-400" : "text-green-600"
                     }`}
                   >
-                    {fileContent?.split("\n").join("\n--------------\n")}
+                    {fileContent}
                   </pre>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
